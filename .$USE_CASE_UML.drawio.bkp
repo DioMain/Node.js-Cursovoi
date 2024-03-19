@@ -1,0 +1,19 @@
+<mxfile host="Electron" modified="2024-03-16T09:33:36.639Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.0.2 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="1bvpw03xizKwXtQh8tFz" version="23.0.2" type="device">
+  <diagram name="Страница — 1" id="E_AzwYwaL8iISXifK_po">
+    <mxGraphModel dx="1050" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Rw6bgn8elzo7DwcfqD3W-5" value="Пользователь" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="310" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Rw6bgn8elzo7DwcfqD3W-6" value="Админитсратор" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="310" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Rw6bgn8elzo7DwcfqD3W-8" value="Разработчик" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="310" width="30" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
