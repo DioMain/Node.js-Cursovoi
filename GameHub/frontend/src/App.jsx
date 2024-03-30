@@ -1,11 +1,31 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./Pages/Index";
+import Header from "./Components/Header";
+import "./css/App.css";
+import { useState } from "react";
 
 function App() {
+
+	const [auth, setAuth] = useState(false);
+	const [userIconUrl, setUserIconUrl] = useState('images/user.png');
+
+	fetch('/api/CheckJwtToken')
+		.then(raw => raw.json())
+		.then(data => {
+			if (data.auth) {
+				setAuth(true);
+				setUserIconUrl(data.iconUrl);
+			}
+			else {
+				setAuth(false);
+			}
+		});
+
 	return (
 		<div>
 			<header>
-        HEADER
+        		<Header/>
+				<div className="FontTest">asdasdasds</div>
 			</header>
 			<main>
 				<BrowserRouter>
@@ -15,7 +35,7 @@ function App() {
 				</BrowserRouter>
 			</main>
 			<footer>
-        FOOTER
+				<img src={userIconUrl}/>
 			</footer>
 		</div>
 	);

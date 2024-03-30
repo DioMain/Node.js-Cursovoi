@@ -1,9 +1,10 @@
 import https from "https";
 import express, { Express } from 'express';
 import expressws, { Instance } from 'express-ws';
-import express_session from 'express-session';
+import expressSession from 'express-session';
 import multer, { Multer } from 'multer';
 import fs from 'fs';
+import cookieParser from "cookie-parser";
 
 const options = {
     key: fs.readFileSync('./ssl/server.key'),
@@ -14,9 +15,13 @@ class Server {
 
     public App : Express;
     public WebSocket : Instance;
-    public Multer : Multer
+    public Multer : Multer;
+    
+    private isHttps: boolean;
 
-    constructor() {
+    constructor(ishttps: boolean = false) {
+        this.isHttps = ishttps;
+
         this.App = express();
         this.WebSocket = expressws(this.App);
 
@@ -24,11 +29,12 @@ class Server {
 
         this.App.use(express.static("./static"));
         this.App.use(express.json());
-        this.App.use(express_session({ saveUninitialized: false, secret: 'asge122tgd' }));
+        this.App.use(cookieParser());
+        this.App.use(expressSession({ saveUninitialized: false, secret: 'asge122tgd', cookie: { secure: ishttps }, resave: false }));
     }
 
-    Listen(ishttps: boolean = false) {
-        if (ishttps){
+    Listen() {
+        if (this.isHttps){
             https.createServer(options, this.App).listen(5000, () => {
                 console.log("Https server listen on: https://localhost:5000/");
             });

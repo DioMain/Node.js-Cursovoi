@@ -1,23 +1,31 @@
 import DataBase from "./src/DataBase";
 import Server from "./src/Server";
-import fs from "fs";
+import { MVCManager } from "./src/MVC";
+import { DataManager, GameData, UserData } from "./src/DataManager";
+import PassowordHasher from "./src/PassowordHasher";
+import JwtManager from "./src/JwtManager";
+import ControllerImporter from "./src/ControllerImporter";
 
-const srv = new Server();
+ControllerImporter();
 
-const db = new DataBase();
+const database = new DataBase();
+const dataManager = new DataManager();
+const passwordHasher = new PassowordHasher("GAMEHUB");
+const jwtManager = new JwtManager("GAMEHUB");
+const server = new Server(false);
 
-db.connect();
+MVCManager.AddDependency("Jwt", jwtManager);
+MVCManager.AddDependency("PasswordHasher", passwordHasher);
+MVCManager.AddDependency("Data", dataManager);
+MVCManager.AddDependency("Server", server);
+MVCManager.AddDependency("DataBase", database);
 
-srv.App.get("/", (req, res) => {
-    res.writeHead(200, { "content-type":"text/html" });
-    res.write(fs.readFileSync("./public/index.html"));
-    res.end();
-});
+database.connect();
 
-srv.App.get("/api/test", async (req, res) => {
-    let admin = await db.Instance.user.findFirst({ where: { name: "ADMIN" }});
+let manager = new MVCManager(server);
 
-    res.end(`${admin?.name} ${admin?.description} ${admin?.email} ${admin?.role}`);
-});
+manager.UseLinkedCotrollers();
 
-srv.Listen(false);
+manager.Build();
+
+server.Listen();

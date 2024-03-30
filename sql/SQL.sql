@@ -86,3 +86,19 @@ drop table "user";
 INSERT INTO "user" (Name, Description, Password, Email, Role) values ('ADMIN', 'ADMIN DESC',
                                                                       '6a5590546b7bd526c98537c5aea7ee8feb0b6ed00ba11717af4e1bf650412818',
                                                                       'admin@mail.com', 'ADMIN');
+
+INSERT INTO "user" (Name, Description, Password, Email, Role) values ('USER', 'USER DESC',
+                                                                      '6a5590546b7bd526c98537c5aea7ee8feb0b6ed00ba11717af4e1bf650412818',
+                                                                      'user@mail.com', 'USER');
+
+INSERT INTO "user" (Name, Description, Password, Email, Role) values ('DEVELOPER', 'DEVELOPER DESC',
+                                                                      '6a5590546b7bd526c98537c5aea7ee8feb0b6ed00ba11717af4e1bf650412818',
+                                                                      'developer@mail.com', 'DEVELOPER');
+
+INSERT INTO Company (Name, Description, state) values ('StarSverSquad', '3S', 1);
+
+SELECT * from Company;
+SELECT * from "user";
+SELECT * from Game;
+
+INSERT INTO Game (Company, Name, Description, Tags, State, PriceUSD) VALUES (1, 'Thomos the train', 'Remake', 'JRPG:Undertale:RPG', 1, 1.99);
