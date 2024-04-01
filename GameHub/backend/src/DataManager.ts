@@ -85,7 +85,7 @@ class DataManager {
 
             data.UserID = id;
 
-            data.IconPath = `${sdir}/iconpath.png`;
+            data.IconPath = `${sdir}/icon.png`;
 
             return data;
         }

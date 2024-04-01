@@ -1,10 +1,10 @@
+import ControllerImporter from "./src/ControllerImporter";
 import DataBase from "./src/DataBase";
 import Server from "./src/Server";
 import { MVCManager } from "./src/MVC";
-import { DataManager, GameData, UserData } from "./src/DataManager";
+import { DataManager } from "./src/DataManager";
 import PassowordHasher from "./src/PassowordHasher";
 import JwtManager from "./src/JwtManager";
-import ControllerImporter from "./src/ControllerImporter";
 
 ControllerImporter();
 

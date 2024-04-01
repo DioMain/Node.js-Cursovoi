@@ -9,19 +9,19 @@ function Controller(constructor: Function) {
 
 function MapRoute(url: string, mvcmethod: MVCRouteMethod) {
     return function (target: MVCController, method: string, descriptor: PropertyDescriptor) {
-        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, mvcmethod, descriptor.value, (typeof target)));
+        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, mvcmethod, descriptor.value, target.constructor.name));
     }
 }
 
 function MapGet(url: string) {
     return function (target: MVCController, method: string, descriptor: PropertyDescriptor) {
-        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, MVCRouteMethod.GET, descriptor.value, (typeof target)));
+        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, MVCRouteMethod.GET, descriptor.value, target.constructor.name));
     }
 }
 
 function MapPost(url: string) {
     return function (target: MVCController, method: string, descriptor: PropertyDescriptor) {
-        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, MVCRouteMethod.POST, descriptor.value, (typeof target)));
+        MVCController.LinkedRoutes.push(MVCRoute.CreateB(url, MVCRouteMethod.POST, descriptor.value, target.constructor.name));
 
     }
 }
@@ -32,7 +32,6 @@ function Dependency(tag: string) {
 
         const getter = () => {
             if (value == undefined) {
-
                 value = MVCManager.LinkedDependencies.get(tag);
 
                 if (value == undefined)
@@ -115,13 +114,17 @@ class MVCController {
 
     UseLinkedRoutes() {
         MVCController.LinkedRoutes.forEach(element => {
-            if (element.controller === (typeof this)) {
+            if (element.controller === this.constructor.name) {
                 if (!element.isWebSocket)
                     this.AddRoute(element.url, element.method, element.action as RequestHandler);
                 else
                     this.AddRouteWS(element.url, element.action as WebsocketRequestHandler);
             }
         });
+    }
+
+    protected UseDependency<T>(tag: string) : T {
+        return MVCManager.LinkedDependencies.get(tag) as T;
     }
 
     protected EndView(res: Response): void {
@@ -136,7 +139,7 @@ class MVCManager {
     public static LinkedDependencies: Map<string, Object> = new Map<string, Object>();
 
     private server: Server;
-    private controllers: MVCController[];
+    private controllers: Array<MVCController>;
 
     constructor(server: Server) {
         this.server = server;

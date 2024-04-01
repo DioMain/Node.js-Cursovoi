@@ -11,6 +11,10 @@ class DataBase {
     connect() { this.Instance.$connect(); }
 
     close() { this.Instance.$disconnect(); }
+
+    async GetUser(id: number) {
+        return await this.Instance.user.findFirst({ where: { id: id } }); 
+    }
 }
 
 export default DataBase;

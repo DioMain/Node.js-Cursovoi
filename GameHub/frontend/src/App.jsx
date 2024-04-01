@@ -2,43 +2,49 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./Pages/Index";
 import Header from "./Components/Header";
 import "./css/App.css";
-import { useState } from "react";
+import Footer from "./Components/Footer";
+
+import {useDispatch, useSelector} from 'react-redux';
+import { setUser } from "./store/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
 
-	const [auth, setAuth] = useState(false);
-	const [userIconUrl, setUserIconUrl] = useState('images/user.png');
+  let user = useSelector(state => state.user);
 
-	fetch('/api/CheckJwtToken')
-		.then(raw => raw.json())
-		.then(data => {
-			if (data.auth) {
-				setAuth(true);
-				setUserIconUrl(data.iconUrl);
-			}
-			else {
-				setAuth(false);
-			}
-		});
+  if (user.init === false) {
+    fetch("/api/auth")
+    .then(raw => raw.json())
+    .then(data => {
+      if (data.auth) {
+        dispatch(setUser({ init: true, auth: true, data: data.data }));      
+      }
+      else {
+        dispatch(setUser({ init: true, auth: false, data: undefined }));      
+      }
+    });
+  }
 
-	return (
-		<div>
-			<header>
-        		<Header/>
-				<div className="FontTest">asdasdasds</div>
-			</header>
-			<main>
-				<BrowserRouter>
+  console.log(user);
+
+  return (
+    <div>
+      <header>
+        <Header/>
+      </header>
+      <main>
+        asd
+        <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index/>}/>
+            <Route path="/" element={<Index />} />
           </Routes>
-				</BrowserRouter>
-			</main>
-			<footer>
-				<img src={userIconUrl}/>
-			</footer>
-		</div>
-	);
+        </BrowserRouter>
+      </main>
+      <footer>
+        <Footer/>
+      </footer>
+    </div>
+  );
 }
 
 export default App;
