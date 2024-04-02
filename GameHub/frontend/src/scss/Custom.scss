@@ -1,0 +1,91 @@
+.CTextField {
+    .MuiInputBase-root {
+        background-color: white;
+
+        input {
+            color: black;
+            font-family: "Exo2", serif;
+        }
+
+        fieldset {
+            border-color: #2B3486;
+            border-width: 2px;
+        }
+    }
+    .MuiInputBase-root:hover fieldset {
+        border-color: #4b5ae6;
+    }
+    .MuiInputBase-root.Mui-focused fieldset {
+        border-color: #3b4bd2;
+        border-width: 3px;
+    }
+
+    .MuiFormLabel-root {
+        color: black;
+        font-family: "Exo2", serif;
+        font-weight: 600;
+
+        background-color: white;
+        border-radius: 6px;
+
+        padding-left: 6px;
+        padding-right: 6px;
+        left: -3px;
+    }
+    .MuiFormLabel-root.Mui-focused {
+        color: #3b4bd2;
+    }
+}
+
+.CRadio {
+    input {
+        border-color: white;
+    }
+
+    input:hover {
+        .MuiSvgIcon-root {
+            color: #1d8eff;
+        }
+
+        .MuiSvgIcon-root:focus {
+            color: #1873ce;
+        }
+    }
+
+    span:hover {
+        .MuiSvgIcon-root {
+            color: #1d8eff;
+        }
+    }
+
+    .MuiSvgIcon-root {
+        color: #2F2F7A;
+    }
+}
+
+.FontFormat {
+    font-family: "Exo2", sefil;
+    font-weight: 300;
+    color: white;
+}
+
+.CButton0.MuiButtonBase-root {
+    font-family: "Exo2", sefil;
+    font-weight: 500;
+    color: #A6E4FF;
+
+    font-size: 16px;
+
+    background-color: #111138;
+    border: #2F2F7A solid 2px;
+
+    border-radius: 6px;
+
+    min-width: 100px;
+
+    text-transform: none;
+}
+
+.CButton0.MuiButtonBase-root:hover {
+    background-color: #191951;
+}

@@ -1,0 +1,69 @@
+.CTextField .MuiInputBase-root {
+  background-color: white;
+}
+.CTextField .MuiInputBase-root input {
+  color: black;
+  font-family: "Exo2", serif;
+}
+.CTextField .MuiInputBase-root fieldset {
+  border-color: #2B3486;
+  border-width: 2px;
+}
+.CTextField .MuiInputBase-root:hover fieldset {
+  border-color: #4b5ae6;
+}
+.CTextField .MuiInputBase-root.Mui-focused fieldset {
+  border-color: #3b4bd2;
+  border-width: 3px;
+}
+.CTextField .MuiFormLabel-root {
+  color: black;
+  font-family: "Exo2", serif;
+  font-weight: 600;
+  background-color: white;
+  border-radius: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+  left: -3px;
+}
+.CTextField .MuiFormLabel-root.Mui-focused {
+  color: #3b4bd2;
+}
+
+.CRadio input {
+  border-color: white;
+}
+.CRadio input:hover .MuiSvgIcon-root {
+  color: #1d8eff;
+}
+.CRadio input:hover .MuiSvgIcon-root:focus {
+  color: #1873ce;
+}
+.CRadio span:hover .MuiSvgIcon-root {
+  color: #1d8eff;
+}
+.CRadio .MuiSvgIcon-root {
+  color: #2F2F7A;
+}
+
+.FontFormat {
+  font-family: "Exo2", sefil;
+  font-weight: 300;
+  color: white;
+}
+
+.CButton0.MuiButtonBase-root {
+  font-family: "Exo2", sefil;
+  font-weight: 500;
+  color: #A6E4FF;
+  font-size: 16px;
+  background-color: #111138;
+  border: #2F2F7A solid 2px;
+  border-radius: 6px;
+  min-width: 100px;
+  text-transform: none;
+}
+
+.CButton0.MuiButtonBase-root:hover {
+  background-color: #191951;
+}/*# sourceMappingURL=Custom.css.map */

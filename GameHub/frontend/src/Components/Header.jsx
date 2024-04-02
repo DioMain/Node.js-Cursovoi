@@ -2,15 +2,21 @@ import { useSelector } from "react-redux";
 import "./../css/Header.css";
 import { useState } from "react";
 import RegisterDialog from "./RegisterDialog";
+import LoginDialog from "./LoginDialog";
 
 function Header() {
 
+  const defaultUserImageURL = "/images/user.png"
+
   let user = useSelector(state => state.user);
 
-  let [userImageUrl, setUserImageUrl] = useState("/images/user.png");
+  let [userImageUrl, setUserImageUrl] = useState(defaultUserImageURL);
   let [regDialogOpen, setRegDialogOpen] = useState(false);
+  let [loginDialogOpen, setLoginDialogOpen] = useState(false);
 
-  if (user.init && user.auth) {
+  if (user.init && user.auth && userImageUrl === defaultUserImageURL) {
+    console.log(`${user.init} ${user.auth}`);
+
     fetch(`/api/getUserIconLink?id=${user.data.id}`)
       .then(raw => raw.json())
       .then(data => {
@@ -20,22 +26,6 @@ function Header() {
         console.log(err);
       });
   }
-
-  //TODO
-  const loginClick = () => {
-    fetch("/api/login", {
-      method: "POST"
-    })
-      .then(raw => raw.json())
-      .then(data => {
-        if (data.success) {
-          window.location.reload();
-        }
-        else {
-
-        }
-      })
-  };
 
   const getButtonByRole = () => {
     if (user.auth) {
@@ -58,11 +48,23 @@ function Header() {
     setRegDialogOpen(true);
   }
 
+  const registerClose = () => {
+    setRegDialogOpen(false);
+  }
+
+  const loginOpen = () => {
+    setLoginDialogOpen(true);
+  }
+
+  const loginClose = () => {
+    setLoginDialogOpen(false);
+  }
+
   return (
-    <div className="header-container" id="t">
+    <div className="header-container">
       <nav>
         <div className="links">
-          <a href="#t">Каталог</a>
+          <a href="/">Каталог</a>
           {getButtonByRole()}
         </div>
         <div className="user">
@@ -70,19 +72,20 @@ function Header() {
             {
               user.auth === true ?
                 (
-                  <span><a href="#t">{user.data.name}</a></span>
+                  <span><a href="/user">{user.data.name}</a></span>
                 )
                 :
                 (
-                  <span><a href="#t" onClick={registerOpen}>Регистрация</a>/<a href="#t" onClick={loginClick}>Вход</a></span>
+                  <span><a href="#t" onClick={registerOpen}>Регистрация</a>/<a href="#t" onClick={loginOpen}>Вход</a></span>
                 )
             }
           </div>
-          <div style={{ marginTop: "12px" }} className="img-container"><img src={userImageUrl} /></div>
+          <div style={{ marginTop: "12px" }} className="img-container"><img src={userImageUrl} alt="/images/user.png" /></div>
         </div>
       </nav>
 
-      <RegisterDialog open={regDialogOpen}/>
+      <RegisterDialog open={regDialogOpen} onCloseClick={registerClose}/>
+      <LoginDialog open={loginDialogOpen} onCloseClick={loginClose}/>
     </div>
   )
 }

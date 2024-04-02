@@ -1,0 +1,35 @@
+.login-dialog .container {
+  background-color: #111138;
+  color: white;
+}
+.login-dialog .close-button {
+  width: 40px;
+  height: 40px;
+}
+.login-dialog .content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 50px;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+.login-dialog .error-field {
+  color: red;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  text-align: center;
+  width: auto;
+}
+.login-dialog .flex-button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.login-dialog .CTextField {
+  width: 300px;
+}/*# sourceMappingURL=LoginDialog.css.map */

@@ -1,0 +1,43 @@
+.login-dialog {
+    
+    .container {
+        background-color: #111138;
+        color: white;
+    }
+
+    .close-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+
+        margin-left: 50px;
+        margin-right: 50px;
+        margin-top: 50px;
+
+        width: fit-content;
+        height: max-content;
+    }
+
+    .error-field {
+        color: red;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: 300;
+        text-align: center;
+        width: auto;
+    }
+    
+    .flex-button-row {
+        display: flex;
+        flex-direction: row;
+        gap: 20px
+    }
+
+    .CTextField {
+        width: 300px;
+    }
+}   

@@ -98,7 +98,9 @@ INSERT INTO "user" (Name, Description, Password, Email, Role) values ('DEVELOPER
 INSERT INTO Company (Name, Description, state) values ('StarSverSquad', '3S', 1);
 
 SELECT * from Company;
-SELECT * from "user";
+SELECT * from "user"; -- admin@mail.com
 SELECT * from Game;
+
+DELETE FROM "user" where id = 4 or id = 5;
 
 INSERT INTO Game (Company, Name, Description, Tags, State, PriceUSD) VALUES (1, 'Thomos the train', 'Remake', 'JRPG:Undertale:RPG', 1, 1.99);

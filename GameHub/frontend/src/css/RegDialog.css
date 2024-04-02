@@ -1,0 +1,35 @@
+.register-dialog .container {
+  background-color: #111138;
+  color: white;
+}
+.register-dialog .close-button {
+  width: 40px;
+  height: 40px;
+}
+.register-dialog .content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 50px;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+.register-dialog .error-field {
+  color: red;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  text-align: center;
+  width: auto;
+}
+.register-dialog .flex-button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.register-dialog .CTextField {
+  width: 300px;
+}/*# sourceMappingURL=RegDialog.css.map */
