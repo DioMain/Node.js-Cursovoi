@@ -3,7 +3,6 @@ import DataBase from "../DataBase";
 import JwtManager from "../JwtManager";
 import { Controller, Dependency, MVCController, MVCManager, MapGet, MapPost } from "../MVC";
 import { Request, Response, response } from "express";
-import { UserRole } from "../models/User";
 import { DataManager, UserData } from "../DataManager";
 import PassowordHasher from "../PassowordHasher";
 
