@@ -15,16 +15,7 @@ function Header() {
   let [loginDialogOpen, setLoginDialogOpen] = useState(false);
 
   if (user.init && user.auth && userImageUrl === defaultUserImageURL) {
-    console.log(`${user.init} ${user.auth}`);
-
-    fetch(`/api/getUserIconLink?id=${user.data.id}`)
-      .then(raw => raw.json())
-      .then(data => {
-        setUserImageUrl(data.iconLink);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    setUserImageUrl(`/users/${user.data.id}/icon.png`);
   }
 
   const getButtonByRole = () => {
@@ -61,7 +52,7 @@ function Header() {
   }
 
   return (
-    <div className="header-container">
+    <div className="header-container" id="site_header">
       <nav>
         <div className="links">
           <a href="/">Каталог</a>
@@ -70,22 +61,24 @@ function Header() {
         <div className="user">
           <div style={{ marginTop: "28px" }}>
             {
-              user.auth === true ?
+              user.auth ?
                 (
                   <span><a href="/user">{user.data.name}</a></span>
                 )
                 :
                 (
-                  <span><a href="#t" onClick={registerOpen}>Регистрация</a>/<a href="#t" onClick={loginOpen}>Вход</a></span>
+                  <span><a href="#site_header" onClick={registerOpen}>Регистрация</a>/<a href="#site_header" onClick={loginOpen}>Вход</a></span>
                 )
             }
           </div>
-          <div style={{ marginTop: "12px" }} className="img-container"><img src={userImageUrl} alt="/images/user.png" /></div>
+          <div style={{ marginTop: "12px" }} className="img-container">
+            <img src={userImageUrl} alt="/images/user.png" />
+          </div>
         </div>
       </nav>
 
-      <RegisterDialog open={regDialogOpen} onCloseClick={registerClose}/>
-      <LoginDialog open={loginDialogOpen} onCloseClick={loginClose}/>
+      <RegisterDialog open={regDialogOpen} onCloseClick={registerClose} />
+      <LoginDialog open={loginDialogOpen} onCloseClick={loginClose} />
     </div>
   )
 }

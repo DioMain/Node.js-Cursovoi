@@ -1,0 +1,15 @@
+.user-editor-container {
+    width: 100%;
+
+    .user-editor-image-display {
+        width: 150px;
+        height: 150px;
+
+        img {
+            border-radius: 128px;
+
+            width: inherit;
+            height: inherit;
+        }
+    }
+}

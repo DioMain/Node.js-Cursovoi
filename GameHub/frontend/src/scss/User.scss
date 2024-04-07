@@ -1,0 +1,17 @@
+.user-page-contaiener {
+    display: grid;
+    margin: 20px;
+
+    grid-template-columns: 240px auto;
+    gap: 20px;
+
+
+    .user-page-menu {
+        background-color: #161647;
+        color: white;
+
+        border-radius: 4px;
+
+        padding: 10px;
+    }
+}

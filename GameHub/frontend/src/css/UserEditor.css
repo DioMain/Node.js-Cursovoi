@@ -1,0 +1,12 @@
+.user-editor-container {
+  width: 100%;
+}
+.user-editor-container .user-editor-image-display {
+  width: 150px;
+  height: 150px;
+}
+.user-editor-container .user-editor-image-display img {
+  border-radius: 128px;
+  width: inherit;
+  height: inherit;
+}/*# sourceMappingURL=UserEditor.css.map */

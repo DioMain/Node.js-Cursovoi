@@ -14,6 +14,7 @@ function RegisterDialog({ open, onCloseClick }) {
 
   let [regError, setRegError] = React.useState("");
   let [userRoleRadio, setUserRoleRadio] = React.useState("USER");
+  let [userEmail, setUserEmail] = React.useState("");
 
   const register = () => {
 
@@ -63,6 +64,10 @@ function RegisterDialog({ open, onCloseClick }) {
     setUserRoleRadio(evt.target.value);
   }
 
+  const emailTextChangeHandle = (evt) => {
+    setUserEmail(evt.target.value);
+  }
+
   return (
     <Dialog
       className='register-dialog'
@@ -88,6 +93,7 @@ function RegisterDialog({ open, onCloseClick }) {
                   id="register_email"
                   label="Почта"
                   className='CTextField'
+                  onChange={emailTextChangeHandle}
                 />
                 <TextField
                   id="register_nickname"
@@ -95,7 +101,7 @@ function RegisterDialog({ open, onCloseClick }) {
                   className='CTextField'
                 />
               </div>
-              <div className='flex-button-row'>
+              <div className='flex-button-row' style={{marginTop: "15px"}}>
                 <TextField
                   id="register_password"
                   label="Пароль"
@@ -122,10 +128,15 @@ function RegisterDialog({ open, onCloseClick }) {
                   <Radio className='CRadio' value="DEVELOPER"></Radio>
                   Разработчик
                 </label>
-                <label>
-                  <Radio className='CRadio' value="ADMIN"></Radio>
-                  Администратор
-                </label>
+                {
+                  userEmail.startsWith("ADMIN") && (
+                    <label>
+                      <Radio className='CRadio' value="ADMIN"></Radio>
+                      Администратор
+                    </label>
+                  )
+                }
+
               </RadioGroup>
             </div>
           </div>

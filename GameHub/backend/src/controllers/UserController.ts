@@ -102,19 +102,12 @@ class UserController extends MVCController {
         }
     }
 
-    @MapGet("/api/getUserIconLink")
-    GetUserIcon(req: Request, res: Response) {
-        let id = Number.parseInt(req.query.id as string);
+    @MapGet('/api/logout')
+    Logout(req: Request, res: Response) {
 
-        let userData = this.localData.GetUserData(id);
+        res.cookie("jwt", "");
 
-        if (userData != undefined) {
-            res.json({ iconLink: `/users/${id}/icon.png` });
-        }
-        else {
-            res.writeHead(404, `${id} user data not found!`);
-            res.end();
-        }
+        res.redirect("/");
     }
 }
 
