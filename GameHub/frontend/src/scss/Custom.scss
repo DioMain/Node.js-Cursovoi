@@ -37,6 +37,34 @@
     }
 }
 
+.CTextField-Def {
+
+    background-color: white;
+
+    font-size: 16px;
+
+    padding: 16px;
+
+    color: black;
+    font-family: "Exo2", serif;
+
+    border: #2B3486 solid 2px;
+
+    border-radius: 6px;
+}
+
+.CTextField-Def:hover {
+    border-color: #4b5ae6;
+}
+
+.CTextField-Def:focus {
+    border-color: #3b4bd2;
+}
+
+.CTextField-Def:disabled {
+    color: gray;
+}
+
 .CRadio {
     input {
         border-color: white;

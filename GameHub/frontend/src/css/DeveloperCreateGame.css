@@ -1,0 +1,19 @@
+.DCG-container {
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.DCG-container .DCG-Stepper .DCG-Step .DCG-Step-Label .MuiStepLabel-labelContainer .MuiStepLabel-label {
+  font-family: "Exo2", serif;
+}
+.DCG-container .DCG-Stepper .DCG-Step .MuiStepIcon-text {
+  font-family: "Exo2", serif;
+}
+.DCG-container .DCG-Steps-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 16px;
+  background-color: aliceblue;
+  border-radius: 4px;
+}/*# sourceMappingURL=DeveloperCreateGame.css.map */

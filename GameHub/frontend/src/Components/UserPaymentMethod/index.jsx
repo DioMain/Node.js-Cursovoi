@@ -92,7 +92,7 @@ function UserPaymentMethod() {
       headers: {
         "content-type": "application/json"
       },
-      body: JSON.stringify({ number, number, date: date, cvv: cvv })
+      body: JSON.stringify({ number: number, date: date, cvv: cvv })
     })
       .then(raw => raw.json())
       .then(data => {

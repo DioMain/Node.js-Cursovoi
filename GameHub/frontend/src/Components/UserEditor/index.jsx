@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import Divider from "@mui/material/Divider"
 import { useSelector } from "react-redux";
 import TextField from '@mui/material/TextField'
-import ImageInput from "../Common/ImageInput";
+import FileInput from "../Common/FileInput";
 import Textarea from '@mui/joy/Textarea';
 import Confirm from "./../Common/Confirm";
 import { useState } from "react";
@@ -78,7 +78,7 @@ function UserEditor() {
 				<Divider style={{ marginBottom: "20px" }} />
 				<h3 style={{ textAlign: "center", marginBottom: "20px" }}>Редактирование</h3>
 				<Stack direction="column" spacing={2}>
-					<ImageInput inputId="userIcon" butWitdh="223px" butText="Загрузить иконку" />
+					<FileInput inputId="userIcon" buttonText="Загрузить иконку" mime={"image/png, image/jpeg"} />
 					<Stack direction="row" spacing={4}>
 						<TextField id="userNickname" variant="outlined" defaultValue={user.data.name} size="small" />
 						<h3 style={{ marginTop: "10px" }}>Никнейм</h3>

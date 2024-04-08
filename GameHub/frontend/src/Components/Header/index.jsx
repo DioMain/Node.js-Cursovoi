@@ -24,7 +24,7 @@ function Header() {
         case "USER":
           return (<a href="#t">Библиотека</a>);
         case "DEVELOPER":
-          return (<a href="#t">Компании</a>);
+          return (<a href="/developer">Ваши игры</a>);
         case "ADMIN":
           return (<a href="#t">Администрирование</a>);
         default:
