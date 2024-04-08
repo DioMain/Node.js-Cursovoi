@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { Controller, Dependency, MVCController, MapGet } from "../MVC";
-import JwtManager from "../JwtManager";
-import { JwtPayload } from "jsonwebtoken";
+import { Controller, MVCController, MapGet } from "../MVC";
 
 @Controller
 class AppController extends MVCController {

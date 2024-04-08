@@ -1,12 +1,12 @@
-import "./../css/UserEditor.css";
+import "./../../css/UserEditor.css";
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Divider from "@mui/material/Divider"
 import { useSelector } from "react-redux";
 import TextField from '@mui/material/TextField'
-import ImageInput from "../Components/ImageInput";
+import ImageInput from "../Common/ImageInput";
 import Textarea from '@mui/joy/Textarea';
-import Confirm from "../Components/Confirm";
+import Confirm from "./../Common/Confirm";
 import { useState } from "react";
 
 function UserEditor() {
@@ -24,7 +24,7 @@ function UserEditor() {
 		let nickname = document.getElementById("userNickname");
 
 		let formData = new FormData();
-		
+
 		formData.append('userIcon', userIcon.files[0]);
 		formData.append('userNickname', nickname.value);
 		formData.append('userDescription', txtAreaValue);
@@ -32,38 +32,38 @@ function UserEditor() {
 		fetch("/api/edituser", {
 			method: "POST",
 			body: formData
-		}).
-			then(raw => raw.json()).
-			then(data => {
+		})
+			.then(raw => raw.json())
+			.then(data => {
 				if (data.ok) {
 					window.location.reload();
 				}
 				else {
-					if (data.error === "jwt"){
+					if (data.error === "jwt") {
 						window.location.replace("/");
 					}
 				}
-			}).
-			catch(err => console.log(err));
+			})
+			.catch(err => console.log(err));
 	}
 
-  const deleteUser = () => {
-    fetch("/api/deleteuser")
-      .then(raw => raw.json())
-      .then(data => {
-        if (data.ok) {
-          window.location.replace('/');
-        }
-        else {
-          if (data.error === "jwt")
-            window.location.replace('/');
-        }
-      });
-  }
+	const deleteUser = () => {
+		fetch("/api/deleteuser")
+			.then(raw => raw.json())
+			.then(data => {
+				if (data.ok) {
+					window.location.replace('/');
+				}
+				else {
+					if (data.error === "jwt")
+						window.location.replace('/');
+				}
+			});
+	}
 
-  const logout = () => {
-    window.location.assign('/api/logout');
-  }
+	const logout = () => {
+		window.location.assign('/api/logout');
+	}
 
 	return (
 		<div className="user-editor-container">
@@ -84,7 +84,7 @@ function UserEditor() {
 						<h3 style={{ marginTop: "10px" }}>Никнейм</h3>
 					</Stack>
 					<h2 style={{ marginTop: "15px" }}>Описание</h2>
-					<Textarea defaultValue={txtAreaValue} id="userDescription" placeholder="Описание" onChange={(evt) => {txtAreaValue = evt.target.value}}></Textarea>
+					<Textarea defaultValue={txtAreaValue} id="userDescription" placeholder="Описание" onChange={(evt) => { txtAreaValue = evt.target.value }}></Textarea>
 				</Stack>
 				<Stack style={{ marginTop: "15px" }} direction="row" justifyContent="end">
 					<Button style={{ width: "15s0px" }} className="CButton0" onClick={editUser}>Подтвердить</Button>
@@ -96,7 +96,7 @@ function UserEditor() {
 				</Stack>
 			</Stack>
 			<Confirm open={openDeleteConfirm} text={"Вы действительно хотите удалить пользователя?"}
-				onCancel={() => setOpenDeleteConfirm(false)} onConfirm={deleteUser}/>
+				onCancel={() => setOpenDeleteConfirm(false)} onConfirm={deleteUser} />
 		</div>
 	)
 }

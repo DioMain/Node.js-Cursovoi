@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 
-import "./../css/LoginDialog.css";
+import "./../../css/LoginDialog.css";
 import Button from '@mui/material/Button'
 
 function LoginDialog({ open, onCloseClick }) {

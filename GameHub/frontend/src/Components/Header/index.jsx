@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import "./../css/Header.css";
+import "./../../css/Header.css";
 import { useState } from "react";
 import RegisterDialog from "./RegisterDialog";
 import LoginDialog from "./LoginDialog";

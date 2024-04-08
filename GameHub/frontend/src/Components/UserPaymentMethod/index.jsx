@@ -5,10 +5,10 @@ import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from "@mui/material/Divider"
 
-import "./../css/PME_User.css";
+import "./../../css/PME_User.css";
 import TextField from '@mui/material/TextField'
 import { useState } from 'react';
-import CartEditor from '../Components/CartEditor';
+import CartEditor from './CartEditor';
 
 function AddMoney({ open, onClose }) {
   const addMoney = () => {
@@ -63,10 +63,10 @@ function AddMoney({ open, onClose }) {
   )
 }
 
-function PME_User() {
+function UserPaymentMethod() {
   let [openAddMoney, setOpenAddMoney] = useState(false);
   let [openSetUserCart, setOpenSetUserCart] = useState(false);
-
+  
   let [init, setInit] = useState(false);
   let [pmInfo, setPMInfo] = useState({ cart: undefined, walletUSD: undefined });
   let [cartEditorError, setCartEditorError] = useState("");
@@ -176,4 +176,4 @@ function PME_User() {
   )
 }
 
-export default PME_User;
+export default UserPaymentMethod;

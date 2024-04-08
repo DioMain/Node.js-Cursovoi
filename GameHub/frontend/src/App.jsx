@@ -1,14 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Index from "./Pages/Index";
+
+import Index from "./Components/Index";
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import User from "./Components/User";
+
 import "./css/App.css";
 import "./css/Custom.css";
 import "./css/Buttons.css";
-import Footer from "./Components/Footer";
 
 import { useDispatch } from 'react-redux';
 import { setUser } from "./store/userSlice";
-import User from "./Pages/User";
 
 function App() {
   const dispatch = useDispatch();

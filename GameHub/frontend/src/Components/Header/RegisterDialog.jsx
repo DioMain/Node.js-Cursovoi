@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 
-import "./../css/RegDialog.css";
+import "./../../css/RegDialog.css";
 import Button from '@mui/material/Button'
 
 

@@ -1,11 +1,11 @@
-import "./../css/User.css";
+import "./../../css/User.css";
 
 import Stack from "@mui/material/Stack";
 import Button from '@mui/material/Button'
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import UserEditor from './UserEditor';
-import PaymentMethodEditor from "./PME_User";
+import UserEditor from './../UserEditor';
+import PaymentMethodEditor from "./../UserPaymentMethod";
 
 function User() {
 
