@@ -16,28 +16,14 @@ CREATE TABLE "user" (
     WalletUSD money default(0)
 );
 
-CREATE TABLE Company (
-    ID serial primary key,
-    Name text not null,
-    Description text,
-    State int default(0)
-);
-
 CREATE TABLE Game (
     ID serial primary key,
-    Company int references Company(ID) not null,
+    "User" int references "user"(ID) not null,
     Name text not null,
     Description text,
     Tags text,
     State int default(0),
     PriceUSD money not null
-);
-
-CREATE TABLE CompanyMember (
-    ID SERIAL primary key,
-    "User" int references "user"(ID) not null,
-    Company int references Company(ID) not null,
-    Role text not null
 );
 
 create table Sale (
@@ -50,8 +36,7 @@ create table Sale (
 
 create table PaymentMethod (
     ID serial primary key,
-    "User" int references "user"(ID),
-    Company int references Company(ID),
+    "User" int references "user"(ID) not null,
     Currency text not null,
     Type int default(0),
     SpecialInformation json
@@ -59,8 +44,8 @@ create table PaymentMethod (
 
 create table Transaction (
     ID serial primary key,
-    UserPaymentMethod int references PaymentMethod(ID) not null,
-    CompanyPaymentMethod int references PaymentMethod(ID) not null,
+    CustomerPaymentMethod int references PaymentMethod(ID) not null,
+    VendorPaymentMethod int references PaymentMethod(ID) not null,
     Game int references Game(ID) not null,
     Note text
 );
@@ -76,10 +61,8 @@ create table Review (
 drop table Transaction;
 drop table Sale;
 drop table Review;
-drop table CompanyMember;
 drop table Game;
 drop table PaymentMethod;
-drop table Company;
 drop table "user";
 
 --SHA2-256 salt = GAMEHUB

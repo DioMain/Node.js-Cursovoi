@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { UserRole } from './models/User';
 
 class JwtManager {
     public secret: string;
@@ -9,7 +8,7 @@ class JwtManager {
     }
 
     GenerateToken(userId: number, userRole: string): string {
-        return jwt.sign({ userId, userRole }, this.secret, { expiresIn: '5min' });
+        return jwt.sign({ userId, userRole }, this.secret, { expiresIn: '10min' });
     }
 
     AuthenticateToken(token: string) {

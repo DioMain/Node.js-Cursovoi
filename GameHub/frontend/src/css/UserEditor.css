@@ -9,4 +9,11 @@
   border-radius: 128px;
   width: inherit;
   height: inherit;
+}
+.user-editor-container .user-danger-zone {
+  margin-top: 25px;
+  gap: 50px;
+  background-color: rgb(249, 216, 216);
+  padding: 25px;
+  border-radius: 8px;
 }/*# sourceMappingURL=UserEditor.css.map */

@@ -7,50 +7,29 @@ datasource db {
   url      = "postgresql://gamehub_admin:password@localhost:5433/gamehub?schema=data"
 }
 
-model company {
-  id                                           Int             @id @default(autoincrement())
-  name                                         String
-  description                                  String?
-  state                                        Int?            @default(0)
-  companymember_companymember_companyTocompany companymember[] @relation("companymember_companyTocompany")
-  game_game_companyTocompany                   game[]          @relation("game_companyTocompany")
-  paymentmethod_paymentmethod_companyTocompany paymentmethod[] @relation("paymentmethod_companyTocompany")
-}
-
-model companymember {
-  id                                     Int     @id @default(autoincrement())
-  User                                   Int
-  company                                Int
-  role                                   String
-  user                                   user    @relation(fields: [User], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company_companymember_companyTocompany company @relation("companymember_companyTocompany", fields: [company], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model game {
   id                                 Int           @id @default(autoincrement())
-  company                            Int
+  User                               Int
   name                               String
   description                        String?
   tags                               String?
   state                              Int?          @default(0)
   priceusd                           Decimal       @db.Money
-  company_game_companyTocompany      company       @relation("game_companyTocompany", fields: [company], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user                               user          @relation(fields: [User], references: [id], onDelete: NoAction, onUpdate: NoAction)
   review_review_gameTogame           review[]      @relation("review_gameTogame")
   sale_sale_gameTogame               sale[]        @relation("sale_gameTogame")
   transaction_transaction_gameTogame transaction[] @relation("transaction_gameTogame")
 }
 
 model paymentmethod {
-  id                                                          Int           @id @default(autoincrement())
-  User                                                        Int?
-  company                                                     Int?
-  currency                                                    String
-  type                                                        Int?          @default(0)
-  specialinformation                                          Json?         @db.Json
-  user                                                        user?         @relation(fields: [User], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  company_paymentmethod_companyTocompany                      company?      @relation("paymentmethod_companyTocompany", fields: [company], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  transaction_transaction_companypaymentmethodTopaymentmethod transaction[] @relation("transaction_companypaymentmethodTopaymentmethod")
-  transaction_transaction_userpaymentmethodTopaymentmethod    transaction[] @relation("transaction_userpaymentmethodTopaymentmethod")
+  id                                                           Int           @id @default(autoincrement())
+  User                                                         Int
+  currency                                                     String
+  type                                                         Int?          @default(0)
+  specialinformation                                           Json?         @db.Json
+  user                                                         user          @relation(fields: [User], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transaction_transaction_customerpaymentmethodTopaymentmethod transaction[] @relation("transaction_customerpaymentmethodTopaymentmethod")
+  transaction_transaction_vendorpaymentmethodTopaymentmethod   transaction[] @relation("transaction_vendorpaymentmethodTopaymentmethod")
 }
 
 model review {
@@ -73,14 +52,14 @@ model sale {
 }
 
 model transaction {
-  id                                                            Int           @id @default(autoincrement())
-  userpaymentmethod                                             Int
-  companypaymentmethod                                          Int
-  game                                                          Int
-  note                                                          String?
-  paymentmethod_transaction_companypaymentmethodTopaymentmethod paymentmethod @relation("transaction_companypaymentmethodTopaymentmethod", fields: [companypaymentmethod], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  game_transaction_gameTogame                                   game          @relation("transaction_gameTogame", fields: [game], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  paymentmethod_transaction_userpaymentmethodTopaymentmethod    paymentmethod @relation("transaction_userpaymentmethodTopaymentmethod", fields: [userpaymentmethod], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                                                             Int           @id @default(autoincrement())
+  customerpaymentmethod                                          Int
+  vendorpaymentmethod                                            Int
+  game                                                           Int
+  note                                                           String?
+  paymentmethod_transaction_customerpaymentmethodTopaymentmethod paymentmethod @relation("transaction_customerpaymentmethodTopaymentmethod", fields: [customerpaymentmethod], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  game_transaction_gameTogame                                    game          @relation("transaction_gameTogame", fields: [game], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  paymentmethod_transaction_vendorpaymentmethodTopaymentmethod   paymentmethod @relation("transaction_vendorpaymentmethodTopaymentmethod", fields: [vendorpaymentmethod], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model user {
@@ -91,7 +70,7 @@ model user {
   email         String          @unique
   role          String
   walletusd     Decimal?        @default(0) @db.Money
-  companymember companymember[]
+  game          game[]
   paymentmethod paymentmethod[]
   review        review[]
 }

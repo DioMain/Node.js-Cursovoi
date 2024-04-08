@@ -5,7 +5,7 @@ import Button from '@mui/material/Button'
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import UserEditor from './UserEditor';
-import PaymentMethodEditor from "./PaymentMethodEditor";
+import PaymentMethodEditor from "./PME_User";
 
 function User() {
 

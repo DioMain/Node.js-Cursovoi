@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Controller, MVCController, MapPost } from "../MVC";
+import { Controller, MVCController, MapGet, MapPost } from "../MVC";
 import Server from "../Server";
 import JwtManager from "../JwtManager";
 import DataBase from "../DataBase";
@@ -44,7 +44,32 @@ class UserEditorController extends MVCController {
         else {
             res.json({ ok: false, error: "jwt" });
         }
-    }   
+    }
+
+    @MapGet('/api/deleteuser')
+    async DeleteUser(req: Request, res: Response) {
+        if (this.jwt.IsValidToken(req.cookies.jwt)){
+
+            let jwtData = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+
+            let user = await this.db.Instance.user.findFirst({ where: { id: jwtData.userId }});
+
+            fs.rmSync(`./static/users/${user?.id}`, { recursive: true });
+
+            /// TODO: Просто удалить пользователя будет мало...
+
+            await this.db.Instance.paymentmethod.deleteMany({ where: { User: user?.id }});
+
+            await this.db.Instance.user.delete({ where: { id: user?.id }});
+
+            res.clearCookie("jwt");
+
+            res.json({ ok: true });
+        }
+        else {
+            res.json({ ok: false, error: "jwt" });
+        }
+    }
 }
 
 export default UserEditorController;

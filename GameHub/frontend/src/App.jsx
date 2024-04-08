@@ -3,6 +3,7 @@ import Index from "./Pages/Index";
 import Header from "./Components/Header";
 import "./css/App.css";
 import "./css/Custom.css";
+import "./css/Buttons.css";
 import Footer from "./Components/Footer";
 
 import { useDispatch } from 'react-redux';

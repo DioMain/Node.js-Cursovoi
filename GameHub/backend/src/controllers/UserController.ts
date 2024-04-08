@@ -37,7 +37,13 @@ class UserController extends MVCController {
 
             let user = await this.db?.GetUser(tokenData.userId);
 
-            res.json({ auth: true, data: { id: user?.id, name: user?.name, email: user?.email, description: user?.description, role: user?.role } });
+            if (user !== null) {
+                res.json({ auth: true, data: { id: user?.id, name: user?.name, email: user?.email, description: user?.description, role: user?.role } });
+            }
+            else {
+                res.clearCookie('jwt');
+                res.json({ auth: false });
+            }      
         }
         else {
             res.json({ auth: false });
@@ -84,6 +90,10 @@ class UserController extends MVCController {
                 email: req.body.email
             }});
 
+            if (user) {
+                await this.db.Instance.paymentmethod.create({ data: {  User: user.id, type: 0, currency: "USD" }});
+            }
+
             let nuserdata = new UserData();
             nuserdata.IconPath = './static/images/UnknownUser.png';
             nuserdata.UserID = user?.id;
@@ -103,8 +113,7 @@ class UserController extends MVCController {
 
     @MapGet('/api/logout')
     Logout(req: Request, res: Response) {
-
-        res.cookie("jwt", "");
+        res.clearCookie("jwt");
 
         res.redirect("/");
     }

@@ -1,5 +1,4 @@
 import "./../css/UserEditor.css";
-import FormControl from '@mui/material/FormControl'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Divider from "@mui/material/Divider"
@@ -7,9 +6,13 @@ import { useSelector } from "react-redux";
 import TextField from '@mui/material/TextField'
 import ImageInput from "../Components/ImageInput";
 import Textarea from '@mui/joy/Textarea';
+import Confirm from "../Components/Confirm";
+import { useState } from "react";
 
 function UserEditor() {
 	let user = useSelector(state => state.user);
+
+	let [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
 
 	if (!user.auth)
 		return (<div>NOT AUTH</div>);
@@ -44,8 +47,26 @@ function UserEditor() {
 			catch(err => console.log(err));
 	}
 
+  const deleteUser = () => {
+    fetch("/api/deleteuser")
+      .then(raw => raw.json())
+      .then(data => {
+        if (data.ok) {
+          window.location.replace('/');
+        }
+        else {
+          if (data.error === "jwt")
+            window.location.replace('/');
+        }
+      });
+  }
+
+  const logout = () => {
+    window.location.assign('/api/logout');
+  }
+
 	return (
-		<FormControl className="user-editor-container">
+		<div className="user-editor-container">
 			<Stack>
 				<Stack justifyContent="center" direction="row">
 					<div className="user-editor-image-display">
@@ -68,8 +89,15 @@ function UserEditor() {
 				<Stack style={{ marginTop: "15px" }} direction="row" justifyContent="end">
 					<Button style={{ width: "15s0px" }} className="CButton0" onClick={editUser}>Подтвердить</Button>
 				</Stack>
+				<Divider style={{ marginTop: "25px" }} />
+				<Stack className="user-danger-zone" direction="row" justifyContent="space-between">
+					<Button className="CButton-Error" variant="contained" onClick={() => setOpenDeleteConfirm(true)}>Удалить пользователя</Button>
+					<Button className="CButton-Error" variant="contained" onClick={logout}>Выйти</Button>
+				</Stack>
 			</Stack>
-		</FormControl>
+			<Confirm open={openDeleteConfirm} text={"Вы действительно хотите удалить пользователя?"}
+				onCancel={() => setOpenDeleteConfirm(false)} onConfirm={deleteUser}/>
+		</div>
 	)
 }
 

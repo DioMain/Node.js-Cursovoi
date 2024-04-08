@@ -5,6 +5,8 @@ import { MVCManager } from "./src/MVC";
 import { DataManager } from "./src/DataManager";
 import PassowordHasher from "./src/PassowordHasher";
 import JwtManager from "./src/JwtManager";
+import { Request, Response } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 ControllerImporter();
 
