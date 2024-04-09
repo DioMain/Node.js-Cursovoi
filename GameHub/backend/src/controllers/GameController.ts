@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import DataBase from "../DataBase";
 import { DataManager, GameData } from "../DataManager";
 import JwtManager from "../JwtManager";
-import { Controller, MVCController, MapGet } from "../MVC";
+import { Controller, MVCController, MVCRouteMethod, MapGet, MapRoute } from "../MVC";
 import Server from "../Server";
 import { JwtPayload } from "jsonwebtoken";
 import fs from "fs";
+import { game } from "@prisma/client";
 
 @Controller
 class GameController extends MVCController {
@@ -24,9 +25,11 @@ class GameController extends MVCController {
         this.server = this.UseDependency("Server");
 
         this.server.App.post('/api/uploadgame', this.server.Multer.array('files'), this.UploadGame.bind(this));
+        this.server.App.put('/api/editgame', this.server.Multer.array('files'), this.EditGame.bind(this));
     }
 
     async UploadGame(req: Request, res: Response) {
+        let files = req.files as Express.Multer.File[];
 
         if (this.jwt.IsValidToken(req.cookies.jwt)) {
 
@@ -35,7 +38,6 @@ class GameController extends MVCController {
             let user = await this.db.GetUser(jwtdata.userId);
 
             if (user) {
-                let files = req.files as Express.Multer.File[];
 
                 let gamef = new GameData();
 
@@ -48,19 +50,17 @@ class GameController extends MVCController {
                 gamef.CartImagePath = files[1].path;
                 gamef.LibriaryImagePath = files[2].path;
 
-                let game = await this.db.Instance.game.create({ data: { 
-                    name: req.body.name, description: req.body.description,
-                    tags: req.body.tags, priceusd: req.body.price, User: user.id
-                }});
+                let game = await this.db.Instance.game.create({
+                    data: {
+                        name: req.body.name, description: req.body.description,
+                        tags: req.body.tags, priceusd: req.body.price, User: user.id
+                    }
+                });
 
                 gamef.GameID = game.id;
 
                 this.dataManager.SetGameData(gamef);
 
-                fs.unlinkSync(files[0].path);
-                fs.unlinkSync(files[1].path);
-                fs.unlinkSync(files[2].path);
-                fs.unlinkSync(files[3].path);
 
                 res.json({ ok: true });
             }
@@ -71,6 +71,11 @@ class GameController extends MVCController {
         }
         else
             res.json({ ok: false, error: "jwt" });
+
+        fs.unlinkSync(files[0].path);
+        fs.unlinkSync(files[1].path);
+        fs.unlinkSync(files[2].path);
+        fs.unlinkSync(files[3].path);
     }
 
     @MapGet('/api/getgamesbyuser')
@@ -81,9 +86,24 @@ class GameController extends MVCController {
             let user = await this.db.GetUser(jwtdata.userId);
 
             if (user) {
-                let games = await this.db.Instance.game.findMany({ where: { User: user.id }});
+                let games = await this.db.Instance.game.findMany({ where: { User: user.id } });
 
-                res.json({ ok: true, games: games });
+                const gamesWithPath = games.map(game => {
+                    return {
+                        id: game.id,
+                        name: game.name,
+                        description: game.description,
+                        priceusd: game.priceusd,
+                        state: game.state,
+                        User: game.User,
+                        tags: game.tags,
+                        iconImageUrl: `/games/${game.id}/iconimage.png`,
+                        cartImageUrl: `/games/${game.id}/cartimage.png`,
+                        libImageUrl: `/games/${game.id}/libimage.png`,
+                    }
+                });
+
+                res.json({ ok: true, games: gamesWithPath });
             }
             else {
                 res.clearCookie('jwt');
@@ -92,6 +112,164 @@ class GameController extends MVCController {
         }
         else
             res.json({ ok: false, error: "jwt" });
+    }
+
+    @MapGet('/api/getgameinfo')
+    async GetGameInfo(req: Request, res: Response) {
+        let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } });
+
+        if (game) {
+            const gamesWithPath = {
+                id: game.id,
+                name: game.name,
+                description: game.description,
+                priceusd: game.priceusd,
+                state: game.state,
+                User: game.User,
+                tags: game.tags,
+                iconImageUrl: `/games/${game.id}/iconimage.png`,
+                cartImageUrl: `/games/${game.id}/cartimage.png`,
+                libImageUrl: `/games/${game.id}/libimage.png`,
+            }
+
+            res.json({ ok: true, game: gamesWithPath });
+        }
+        else
+            res.json({ ok: false, error: "Game not found" });
+    }
+
+    async EditGame(req: Request, res: Response) {
+        let files = req.files as Express.Multer.File[];
+
+        if (this.jwt.IsValidToken(req.cookies.jwt)) {
+
+            let jwtdata = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+
+            let user = await this.db.GetUser(jwtdata.userId);
+
+            if (user) {
+                let oldgame = await this.db.Instance.game.findFirst({ where: { id: req.body.id } }) as game;
+
+                if (oldgame.User == jwtdata.userId) {
+                    let gamef = new GameData();
+
+                    if (files[3]) {
+                        let splitedName = files[3].originalname.split('.');
+
+                        gamef.GameFilePath = `${files[3].path}`;
+                        gamef.GameFileExtention = splitedName[splitedName.length - 1];
+                    }
+                    else
+                        gamef.GameFilePath = undefined;
+
+                    if (files[0])
+                        gamef.IconImagePath = files[0].path;
+                    else
+                        gamef.IconImagePath = undefined;
+
+                    if (files[1])
+                        gamef.CartImagePath = files[1].path;
+                    else
+                        gamef.CartImagePath = undefined;
+
+                    if (files[2])
+                        gamef.LibriaryImagePath = files[2].path;
+                    else
+                        gamef.LibriaryImagePath = undefined;
+
+                    let game = await this.db.Instance.game.update({
+                        where: {
+                            id: req.body.id
+                        },
+                        data: {
+                            name: req.body.name, description: req.body.description,
+                            tags: req.body.tags, priceusd: req.body.price, User: user.id
+                        }
+                    });
+
+                    gamef.GameID = game.id;
+
+                    this.dataManager.SetGameData(gamef);
+
+                    res.json({ ok: true });
+                }
+                else {
+                    res.json({ ok: false, error: "Uncorrect user" });
+                }
+            }
+            else {
+                res.clearCookie('jwt');
+                res.json({ ok: false, error: "User is not exists" });
+            }
+        }
+        else
+            res.json({ ok: false, error: "jwt" });
+
+        if (files[0])
+            fs.unlinkSync(files[0].path);
+
+        if (files[1])
+            fs.unlinkSync(files[1].path);
+
+        if (files[2])
+            fs.unlinkSync(files[2].path);
+
+        if (files[3])
+            fs.unlinkSync(files[3].path);
+    }
+
+    @MapRoute('/api/deletegame', MVCRouteMethod.DELETE)
+    async DeleteGame(req: Request, res: Response) {
+        if (this.jwt.IsValidToken(req.cookies.jwt)) {
+
+            let jwtdata = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+
+            let user = await this.db.GetUser(jwtdata.userId);
+
+            if (user) {
+                let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } }) as game;
+
+                if (game.User == jwtdata.userId) {
+                    this.dataManager.DeleteGameData(game.id);
+
+                    await this.db.Instance.game.delete({ where: { id: game.id } });
+
+                    res.json({ ok: true });
+                }
+                else {
+                    res.json({ ok: false, error: "Uncorrect user" });
+                }
+            }
+            else {
+                res.clearCookie('jwt');
+                res.json({ ok: false, error: "User is not exists" });
+            }
+        }
+        else
+            res.json({ ok: false, error: "jwt" });
+    }
+
+    @MapGet('/api/downloadgame')
+    async DownloadGame(req: Request, res: Response) {
+        if (!this.jwt.IsValidToken(req.cookies.jwt))
+            res.redirect('/');
+
+        let jwtdata = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+        let user = await this.db.GetUser(jwtdata.userId);
+
+        if (!user)
+            res.redirect('/');
+
+        let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } }) as game;
+
+        if (user?.role === "ADMIN" || (user?.role === "DEVELOPER" && game.User == user?.id)) {
+
+            let gamedata = this.dataManager.GetGameData(game.id);
+
+            res.download(`${gamedata?.GameFilePath}`);
+        }
+        else 
+            res.redirect('/');
     }
 }
 

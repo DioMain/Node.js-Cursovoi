@@ -6,6 +6,7 @@ import './../../css/DeveloperGameList.css';
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import GameElement from './GameElement';
+import Divider from '@mui/material/Divider';
 
 function DeveloperGameList() {
   let user = useSelector(state => state.user);
@@ -48,10 +49,11 @@ function DeveloperGameList() {
             Добавить новую игру
           </Button>
         </Stack>
-        <Stack direction={"column"}>
+        <Divider/>
+        <Stack direction={"column"} spacing={2}>
           {
             games.map(game => {
-              return (<GameElement game={{ name: game.name }} />)
+              return (<GameElement game={game} />)
             })
           }
         </Stack>

@@ -29,7 +29,7 @@ function App() {
     });
 
   return (
-    <div>
+    <div className="BaseContainer">
       <header>
         <Header />
       </header>

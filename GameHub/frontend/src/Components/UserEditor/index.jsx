@@ -30,7 +30,7 @@ function UserEditor() {
 		formData.append('userDescription', txtAreaValue);
 
 		fetch("/api/edituser", {
-			method: "POST",
+			method: "PUT",
 			body: formData
 		})
 			.then(raw => raw.json())
@@ -48,7 +48,7 @@ function UserEditor() {
 	}
 
 	const deleteUser = () => {
-		fetch("/api/deleteuser")
+		fetch("/api/deleteuser", { method: "DELETE" })
 			.then(raw => raw.json())
 			.then(data => {
 				if (data.ok) {
@@ -70,7 +70,7 @@ function UserEditor() {
 			<Stack>
 				<Stack justifyContent="center" direction="row">
 					<div className="user-editor-image-display">
-						<img src={`/users/${user.data.id}/icon.png`} />
+						<img src={`/users/${user.data.id}/icon.png`} style={{ objectFit: "cover"}}/>
 					</div>
 				</Stack>
 				<h3 style={{ textAlign: "center" }}>{user.data.name}</h3>

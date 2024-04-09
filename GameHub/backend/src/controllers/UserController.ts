@@ -95,8 +95,10 @@ class UserController extends MVCController {
             }
 
             let nuserdata = new UserData();
-            nuserdata.IconPath = './static/images/UnknownUser.png';
+
             nuserdata.UserID = user?.id;
+            nuserdata.IconPath = './static/images/UnknownUser.png';
+            nuserdata.Games = [];
 
             this.localData.SetUserData(nuserdata);
 

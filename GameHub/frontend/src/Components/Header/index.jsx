@@ -72,7 +72,7 @@ function Header() {
             }
           </div>
           <div style={{ marginTop: "12px" }} className="img-container">
-            <img src={userImageUrl} alt="/images/user.png" />
+            <img src={userImageUrl} alt="/images/user.png" style={{ objectFit: "cover"}}/>
           </div>
         </div>
       </nav>

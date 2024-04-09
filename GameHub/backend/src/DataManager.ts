@@ -4,6 +4,8 @@ class UserData {
     public UserID?: number;
     
     public IconPath?: string;
+
+    public Games?: Array<Number>;
 }
 
 class GameData {
@@ -17,14 +19,11 @@ class GameData {
     public LibriaryImagePath?: string;
 }
 
-class GameDataMeta {
-    GameFileExtention?: string
-}
-
 class DataManager {
     
     SetUserData(data: UserData) {
         const sdir = `./static/users/${data.UserID}`;
+        const ddir = `./data/users/${data.UserID}`;
 
         if (data.IconPath == undefined)
             return;
@@ -33,7 +32,14 @@ class DataManager {
             if (!this.HasDirectory(sdir))
                 fs.mkdirSync(sdir);
 
-            fs.writeFileSync(`${sdir}/icon.png`, fs.readFileSync(`${data.IconPath}`));
+            if (!this.HasDirectory(ddir))
+                fs.mkdirSync(ddir);
+
+            if (data.IconPath)
+                fs.writeFileSync(`${sdir}/icon.png`, fs.readFileSync(`${data.IconPath}`));
+
+            if (data.Games)
+                fs.writeFileSync(`${ddir}/meta.json`, JSON.stringify({ games: data.Games }));
         }
         catch (err) {
             console.log(err);
@@ -50,23 +56,20 @@ class DataManager {
             if (!this.HasDirectory(sdir))
                 fs.mkdirSync(sdir);
 
-            if (data.IconImagePath != undefined)
+            if (data.IconImagePath)
                 fs.writeFileSync(`${sdir}/iconimage.png`, fs.readFileSync(`${data.IconImagePath}`));
             
-            if (data.GameFilePath != undefined && data.GameFileExtention != undefined)
+            if (data.GameFilePath && data.GameFileExtention){
                 fs.writeFileSync(`${ddir}/gamefile.${data.GameFileExtention}`, fs.readFileSync(`${data.GameFilePath}`));
+                fs.writeFileSync(`${ddir}/meta.json`, JSON.stringify({ GameFileExtention: data.GameFileExtention }));
+            }
 
-            if (data.CartImagePath != undefined)
+            if (data.CartImagePath)
                 fs.writeFileSync(`${sdir}/cartimage.png`, fs.readFileSync(`${data.CartImagePath}`));
 
-            if (data.LibriaryImagePath != undefined)
+            if (data.LibriaryImagePath)
                 fs.writeFileSync(`${sdir}/libimage.png`, fs.readFileSync(`${data.LibriaryImagePath}`));
 
-            let meta = new GameDataMeta();
-
-            meta.GameFileExtention = data.GameFileExtention;
-
-            fs.writeFileSync(`${ddir}/meta.json`, JSON.stringify(meta));
         }
         catch (err) {
             console.log(err);
@@ -75,9 +78,10 @@ class DataManager {
 
     GetUserData(id: number): UserData | undefined {
         const sdir = `./static/users/${id}`;
+        const ddir = `./data/users/${id}`;
 
         try {
-            if (!this.HasDirectory(sdir))
+            if (!this.HasDirectory(sdir) || !this.HasDirectory(ddir))
                 return undefined;
 
             let data = new UserData();
@@ -85,6 +89,10 @@ class DataManager {
             data.UserID = id;
 
             data.IconPath = `${sdir}/icon.png`;
+
+            let meta = JSON.parse(fs.readFileSync(`${ddir}/meta.json`).toString());
+
+            data.Games = meta.games;
 
             return data;
         }
@@ -103,7 +111,7 @@ class DataManager {
             if (!this.HasDirectory(sdir) || !this.HasDirectory(ddir))
                 return undefined;
 
-            let meta = JSON.parse(fs.readFileSync(`${ddir}/meta.json`).toString()) as GameDataMeta;
+            let meta = JSON.parse(fs.readFileSync(`${ddir}/meta.json`).toString());
             
             let data = new GameData();
 
@@ -116,6 +124,36 @@ class DataManager {
             data.LibriaryImagePath = `${sdir}/libimage.png`;
 
             return data;
+        }
+        catch (err) {
+            console.log(err);
+
+            return undefined;
+        }
+    }
+
+    DeleteUserData(id: number) {
+        const sdir = `./static/users/${id}`;
+        const ddir = `./data/users/${id}`;
+
+        try {
+            fs.rmSync(sdir, { recursive: true });
+            fs.rmSync(ddir, { recursive: true });
+        }
+        catch (err) {
+            console.log(err);
+
+            return undefined;
+        }
+    }
+
+    DeleteGameData(id: number) {
+        const sdir = `./static/games/${id}`;
+        const ddir = `./data/games/${id}`;
+
+        try {
+            fs.rmSync(sdir, { recursive: true });
+            fs.rmSync(ddir, { recursive: true });
         }
         catch (err) {
             console.log(err);
