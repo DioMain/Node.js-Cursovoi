@@ -7,6 +7,7 @@ import PassowordHasher from "./src/PassowordHasher";
 import JwtManager from "./src/JwtManager";
 import { Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import AuthService from "./src/AuthService";
 
 ControllerImporter();
 
@@ -22,7 +23,11 @@ MVCManager.AddDependency("Data", dataManager);
 MVCManager.AddDependency("Server", server);
 MVCManager.AddDependency("DataBase", database);
 
+const auth = new AuthService(jwtManager, database);
+
 database.connect();
+
+MVCManager.AddDependency("Auth", auth);
 
 let manager = new MVCManager(server);
 

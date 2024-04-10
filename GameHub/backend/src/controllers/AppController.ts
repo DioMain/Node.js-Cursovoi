@@ -28,11 +28,7 @@ class AppController extends MVCController {
 
     @MapGet('/user')
     Index1(req: Request, res: Response) {
-        if (this.jwt.IsValidToken(req.cookies.jwt)){
-            this.EndView(res);
-        }
-        else
-            res.redirect('/');
+        this.EndView(res);
     }
 
     @MapGet('/developer')

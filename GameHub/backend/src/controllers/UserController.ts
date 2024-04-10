@@ -5,6 +5,7 @@ import { Controller, Dependency, MVCController, MVCManager, MapGet, MapPost } fr
 import { Request, Response, response } from "express";
 import { DataManager, UserData } from "../DataManager";
 import PassowordHasher from "../PassowordHasher";
+import { user } from "@prisma/client";
 
 
 @Controller
@@ -35,10 +36,11 @@ class UserController extends MVCController {
         if (this.jwt?.IsValidToken(token)) {
             let tokenData = this.jwt?.AuthenticateToken(token) as JwtPayload;
 
-            let user = await this.db?.GetUser(tokenData.userId);
+            let user = await this.db?.GetUser(tokenData.userId) as user;
+            let userData = this.localData.GetUserData(user.id);
 
             if (user !== null) {
-                res.json({ auth: true, data: { id: user?.id, name: user?.name, email: user?.email, description: user?.description, role: user?.role } });
+                res.json({ auth: true, data: { id: user.id, name: user.name, email: user.email, description: user.description, role: user.role, games: userData?.Games }});
             }
             else {
                 res.clearCookie('jwt');

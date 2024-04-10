@@ -4,8 +4,15 @@ import IconButton from '@mui/material/IconButton'
 import DownloadIcon from '@mui/icons-material/Download';
 import Tooltip from '@mui/material/Tooltip'
 
+import { setGame } from "./../../store/gameSlice";
+
+
+import { useDispatch } from 'react-redux';
+
 
 function GameElement({ game }) {
+
+  const dispatch = useDispatch();
 
   const getState = (state) => {
     switch (state) {
@@ -22,6 +29,12 @@ function GameElement({ game }) {
 
   const downloadGame = () => {
     window.location.assign(`/api/downloadgame?id=${game.id}`);
+  }
+
+  const editGame = () => {
+    dispatch(setGame({ data: game }));
+
+    window.location.replace('/developer/editGame');
   }
 
   return (
@@ -78,7 +91,7 @@ function GameElement({ game }) {
             </Tooltip>
 
             <Tooltip title="Редактировать игру">
-              <IconButton>
+              <IconButton onClick={editGame}>
                 <EditIcon sx={{ color: "black" }} />
               </IconButton>
             </Tooltip>

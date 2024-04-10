@@ -1,29 +1,27 @@
 import { Request, Response } from "express";
 import { Controller, MVCController, MapGet, MapPost } from "../MVC";
 import DataBase from "../DataBase";
-import JwtManager from "../JwtManager";
 import { JwtPayload } from "jsonwebtoken";
 import { JsonObject } from "@prisma/client/runtime/library";
+import AuthService from "../AuthService";
 
 @Controller
 class PaymentMethodController extends MVCController {
 
     public db: DataBase;
-    public jwt: JwtManager;
+    public auth: AuthService;
 
     constructor() {
         super();
 
         this.db = this.UseDependency("DataBase");
-        this.jwt = this.UseDependency("Jwt");
+        this.auth = this.UseDependency("Auth");
     }
 
     @MapGet('/api/getpminfo')
     async GetPMInfo(req: Request, res: Response) {
-        if (this.jwt.IsValidToken(req.cookies.jwt)) {
-            let data = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
-
-            let user = await this.db.Instance.user.findFirst({ where: { id: data.userId } });
+        try {
+            let user = await this.auth.Auth(req);
 
             let wallet = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 0 } });
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
@@ -38,17 +36,15 @@ class PaymentMethodController extends MVCController {
             }
 
             res.json({ ok: true, walletUSD: user?.walletusd, cart: cartNumber });
+        } catch (error) {
+            res.json({ ok: false, error: error });
         }
-        else
-            res.json({ ok: false, error: "jwt" });
     }
 
     @MapPost('/api/tool/addmoney')
     async AddMoney(req: Request, res: Response) {
-        if (this.jwt.IsValidToken(req.cookies.jwt)) {
-            let data = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
-
-            let user = await this.db.Instance.user.findFirst({ where: { id: data.userId } });
+        try {
+            let user = await this.auth.Auth(req);
 
             let wallet = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 0 } });
 
@@ -61,61 +57,55 @@ class PaymentMethodController extends MVCController {
             await this.db.Instance.user.update({ where: { id: user?.id }, data: { walletusd: walletUSD + money } });
 
             res.json({ ok: true });
+        } catch (error) {
+            res.json({ ok: false, error: error });
         }
-        else
-            res.json({ ok: false, error: "jwt" });
     }
 
     @MapPost('/api/setusercart')
     async SetUserCart(req: Request, res: Response) {
-        if (this.jwt.IsValidToken(req.cookies.jwt)) {
-            let data = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
-
-            let user = await this.db.Instance.user.findFirst({ where: { id: data.userId } });
+        try {
+            let user = await this.auth.Auth(req);
 
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
 
             if (cart == null && user)
                 await this.db.Instance.paymentmethod.create({ data: { User: user?.id, type: 1, currency: "ANY" } });
 
-            try {
-                await this.db.Instance.paymentmethod.updateMany({
-                    where: { User: user?.id, type: 1 },
-                    data: {
-                        specialinformation: {
-                            number: req.body.number,
-                            date: req.body.date,
-                            cvv2: req.body.cvv,
-                        }
+            await this.db.Instance.paymentmethod.updateMany({
+                where: { User: user?.id, type: 1 },
+                data: {
+                    specialinformation: {
+                        number: req.body.number,
+                        date: req.body.date,
+                        cvv2: req.body.cvv,
                     }
-                });
+                }
+            });
 
-                res.json({ ok: true });
-            }
-            catch (err) {
-                res.json({ ok: false, error: err });
-            }
+            res.json({ ok: true });
+        } catch (error) {
+            res.json({ ok: false, error: error });
         }
-        else
-            res.json({ ok: false, error: "jwt" });
     }
 
     @MapGet('/api/unlinkusercart')
     async UnlinkCart(req: Request, res: Response) {
-        if (this.jwt.IsValidToken(req.cookies.jwt)) {
-            let data = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+        try {
+            let user = await this.auth.Auth(req);
 
-            let user = await this.db.Instance.user.findFirst({ where: { id: data.userId } });
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
 
             if (cart) {
                 await this.db.Instance.paymentmethod.delete({ where: { id: cart.id }});
-            }
 
-            res.json({ ok: true });
+                res.json({ ok: true });
+            }
+            else throw "Cart is not exist";
+
+        } catch (error) {
+            res.json({ ok: false, error: error });
         }
-        else
-            res.json({ ok: false, error: "jwt" });
     }
 }
 
