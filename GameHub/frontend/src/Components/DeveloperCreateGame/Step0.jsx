@@ -36,7 +36,7 @@ function Step0({ onChange, data: { name, description, tags, price, isfree } }) {
       <TextArea onChange={descriptionFieldHandle} defaultValue={description} style={{ marginTop: "10px" }}></TextArea>
 
       <h4 style={{ marginTop: "25px" }}>Теги</h4>
-      <div style={{ fontSize: "12px"}}>Через зяпятую (пример: [RPG, JRPG, Shooter])</div>
+      <div style={{ fontSize: "12px" }}>Через зяпятую (пример: [RPG, JRPG, Shooter])</div>
       <TextArea onChange={tagsFieldHandle} defaultValue={tags} style={{ marginTop: "10px" }}></TextArea>
 
       <Stack direction={'row'} spacing={3} style={{ marginTop: "25px" }} justifyContent={"space-between"}>
@@ -45,10 +45,10 @@ function Step0({ onChange, data: { name, description, tags, price, isfree } }) {
           <input onChange={priceFieldHandle} defaultValue={price} min={0} type='number' step="0.01" className='CTextField-Def' placeholder='The Game' disabled={isfree} />
           <Stack justifyContent={'center'}><h4>Цена игры $</h4></Stack>
         </Stack>
-        
+
         <Stack direction={'row'}>
           <Stack justifyContent={'center'}>
-            <Switch checked={isfree} onChange={freeCheckBoxHandle}/>
+            <Switch checked={isfree} onChange={freeCheckBoxHandle} />
           </Stack>
           <Stack justifyContent={'center'}>
             <h4>Бесплатная</h4>

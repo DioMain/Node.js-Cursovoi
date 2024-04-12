@@ -1,6 +1,68 @@
 .DGE-container {
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 180px;
+    margin-right: 180px;
     margin-top: 25px;
     margin-bottom: 25px;
+
+    .DGE-title {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+
+        .DGE-title-text {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+
+            padding: 6px;
+
+            h1 {    
+                text-shadow: 0 0 3px;
+                opacity: 1;
+                color: white;
+            }
+        }
+
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .DGE-Libriary {
+        background-color: #1a1a59;
+
+        color: white;
+
+        overflow: hidden;
+
+        padding: 8px;
+
+        border-radius: 4px;
+
+        img {
+            height: 32px;
+        }
+
+        div {
+            font-size: 16px;
+        }
+    }
+
+    .DGE-main, .DGE-sale {
+        border-radius: 6px;
+        background-color: #e7f4ff;
+
+        padding: 16px;
+    }
+
+    .DGE-danger {
+        border-radius: 6px;
+        background-color: #ffe7e7;
+
+        padding: 16px;
+    }
 }

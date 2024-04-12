@@ -68,17 +68,7 @@ class UserEditorController extends MVCController {
 
             this.dataManager.DeleteUserData(user.id);
 
-            /// TODO: Просто удалить пользователя будет мало...
-
-            await this.db.Instance.paymentmethod.deleteMany({ where: { User: user.id } });
-
-            (await this.db.Instance.game.findMany({ where: { User: user.id } })).forEach(async (game) => {
-                this.dataManager.DeleteGameData(game.id);
-
-                await this.db.Instance.game.delete({ where: { id: game.id } });
-            });
-
-            await this.db.Instance.user.delete({ where: { id: user.id } });
+            await this.db.DeteleUser(user.id);
 
             res.clearCookie("jwt");
 

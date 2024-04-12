@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import DataBase from "../DataBase";
 import { DataManager, GameData } from "../DataManager";
-import { Controller, MVCController, MVCRouteMethod, MapGet, MapRoute } from "../MVC";
+import { Controller, MVCController, MVCRouteMethod, MapGet, MapPost, MapRoute } from "../MVC";
 import Server from "../Server";
-import { JwtPayload } from "jsonwebtoken";
 import fs from "fs";
 import { game } from "@prisma/client";
 import AuthService from "../AuthService";
@@ -25,7 +24,7 @@ class GameController extends MVCController {
         this.server = this.UseDependency("Server");
 
         this.server.App.post('/api/uploadgame', this.server.Multer.array('files'), this.UploadGame.bind(this));
-        this.server.App.put('/api/editgame', this.server.Multer.array('files'), this.EditGame.bind(this));
+        this.server.App.put('/api/updategame', this.server.Multer.array('files'), this.UpdateGame.bind(this));
     }
 
     async UploadGame(req: Request, res: Response) {
@@ -75,6 +74,7 @@ class GameController extends MVCController {
             let games = await this.db.Instance.game.findMany({ where: { User: user.id } });
 
             const gamesWithPath = games.map(game => {
+
                 return {
                     id: game.id,
                     name: game.name,
@@ -85,7 +85,7 @@ class GameController extends MVCController {
                     tags: game.tags,
                     iconImageUrl: `/games/${game.id}/iconimage.png`,
                     cartImageUrl: `/games/${game.id}/cartimage.png`,
-                    libImageUrl: `/games/${game.id}/libimage.png`,
+                    libImageUrl: `/games/${game.id}/libimage.png`
                 }
             });
 
@@ -97,7 +97,8 @@ class GameController extends MVCController {
 
     @MapGet('/api/getgameinfo')
     async GetGameInfo(req: Request, res: Response) {
-        let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } });
+        let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
+        let gameSale = await this.db.Instance.sale.findFirst({ where: { game: game?.id } });
 
         if (game) {
             const gamesWithPath = {
@@ -111,6 +112,7 @@ class GameController extends MVCController {
                 iconImageUrl: `/games/${game.id}/iconimage.png`,
                 cartImageUrl: `/games/${game.id}/cartimage.png`,
                 libImageUrl: `/games/${game.id}/libimage.png`,
+                sale: gameSale
             }
 
             res.json({ ok: true, game: gamesWithPath });
@@ -119,48 +121,57 @@ class GameController extends MVCController {
             res.json({ ok: false, error: "Game not found" });
     }
 
-    async EditGame(req: Request, res: Response) {
+    async UpdateGame(req: Request, res: Response) {
         let files = req.files as Express.Multer.File[];
 
         try {
             let user = await this.auth.Auth(req);
 
-            let oldgame = await this.db.Instance.game.findFirst({ where: { id: req.body.id } }) as game;
+            let gameid = Number.parseInt(req.body.id as string);
+
+            let oldgame = await this.db.GetGame(gameid) as game;
 
             if (oldgame.User == user.id) {
                 let gamef = new GameData();
 
-                if (files[3]) {
-                    let splitedName = files[3].originalname.split('.');
+                let fileTypes = (JSON.parse(req.body.filesTypes)) as Array<string>;
 
-                    gamef.GameFilePath = `${files[3].path}`;
+                let mainfileIndex = fileTypes.findIndex(i => i === 'mainfile');
+                let iconIndex = fileTypes.findIndex(i => i === 'icon');
+                let cartIndex = fileTypes.findIndex(i => i === 'catalog');
+                let libriaryIndex = fileTypes.findIndex(i => i === 'libriary');
+
+                if (mainfileIndex != -1) {
+                    let splitedName = files[mainfileIndex].originalname.split('.');
+
+                    gamef.GameFilePath = `${files[mainfileIndex].path}`;
                     gamef.GameFileExtention = splitedName[splitedName.length - 1];
                 }
                 else
                     gamef.GameFilePath = undefined;
 
-                if (files[0])
-                    gamef.IconImagePath = files[0].path;
+                if (iconIndex != -1)
+                    gamef.IconImagePath = files[iconIndex].path;
                 else
                     gamef.IconImagePath = undefined;
 
-                if (files[1])
-                    gamef.CartImagePath = files[1].path;
+                if (cartIndex != -1)
+                    gamef.CartImagePath = files[cartIndex].path;
                 else
                     gamef.CartImagePath = undefined;
 
-                if (files[2])
-                    gamef.LibriaryImagePath = files[2].path;
+                if (libriaryIndex != -1)
+                    gamef.LibriaryImagePath = files[libriaryIndex].path;
                 else
                     gamef.LibriaryImagePath = undefined;
 
                 let game = await this.db.Instance.game.update({
                     where: {
-                        id: req.body.id
+                        id: gameid
                     },
                     data: {
                         name: req.body.name, description: req.body.description,
-                        tags: req.body.tags, priceusd: req.body.price, User: user.id
+                        tags: req.body.tags, priceusd: Number.parseFloat(req.body.price)
                     }
                 });
 
@@ -194,12 +205,12 @@ class GameController extends MVCController {
         try {
             let user = await this.auth.Auth(req);
 
-            let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } }) as game;
+            let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
 
             if (game.User == user.id) {
                 this.dataManager.DeleteGameData(game.id);
 
-                await this.db.Instance.game.delete({ where: { id: game.id } });
+                await this.db.DeteleGame(game.id);
 
                 res.json({ ok: true });
             }
@@ -218,10 +229,10 @@ class GameController extends MVCController {
 
             let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } }) as game;
 
-            if (user?.role === "ADMIN" || (user?.role === "DEVELOPER" && game.User == user?.id)) {
-    
+            if (user.role === "ADMIN" || (user.role === "DEVELOPER" && game.User == user.id)) {
+
                 let gamedata = this.dataManager.GetGameData(game.id);
-    
+
                 res.download(`${gamedata?.GameFilePath}`);
             }
             else throw null;

@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const gameSlice = createSlice({
     name: "game",
-    initialState: { data: undefined },
+    initialState: { init: false, data: undefined },
     reducers: {
         setGame(state, action) {
             state.data = action.payload.data;
+            state.init = action.payload.init;
         }
     }
 });

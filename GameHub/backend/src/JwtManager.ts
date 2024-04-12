@@ -8,7 +8,7 @@ class JwtManager {
     }
 
     GenerateToken(userId: number, userRole: string): string {
-        return jwt.sign({ userId, userRole }, this.secret, { expiresIn: '10min' });
+        return jwt.sign({ userId, userRole }, this.secret, { expiresIn: '20min' });
     }
 
     AuthenticateToken(token: string) {

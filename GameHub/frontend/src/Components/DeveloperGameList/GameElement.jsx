@@ -34,7 +34,7 @@ function GameElement({ game }) {
   const editGame = () => {
     dispatch(setGame({ data: game }));
 
-    window.location.replace('/developer/editGame');
+    window.location.replace(`/developer/editGame/${game.id}`);
   }
 
   return (
@@ -47,7 +47,7 @@ function GameElement({ game }) {
 
       <Stack direction={"row"} spacing={2}>
         {/* Cart image aspect 2:1 */}
-        <img style={{ width: `300px`, height: `150px`, objectFit: "cover" }} src={game.cartImageUrl} />
+        <img style={{ width: `300px`, height: `150px`, objectFit: "cover", borderRadius: "2px" }} src={game.cartImageUrl} />
         <Stack justifyContent={"space-between"}>
           <Stack>
             <h2>

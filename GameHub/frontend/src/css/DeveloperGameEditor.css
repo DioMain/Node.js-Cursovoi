@@ -1,1 +1,52 @@
-/*# sourceMappingURL=DeveloperGameEditor.css.map */
+.DGE-container {
+  margin-left: 180px;
+  margin-right: 180px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.DGE-container .DGE-title {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+.DGE-container .DGE-title .DGE-title-text {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 6px;
+}
+.DGE-container .DGE-title .DGE-title-text h1 {
+  text-shadow: 0 0 3px;
+  opacity: 1;
+  color: white;
+}
+.DGE-container .DGE-title img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.DGE-container .DGE-Libriary {
+  background-color: #1a1a59;
+  color: white;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 4px;
+}
+.DGE-container .DGE-Libriary img {
+  height: 32px;
+}
+.DGE-container .DGE-Libriary div {
+  font-size: 16px;
+}
+.DGE-container .DGE-main, .DGE-container .DGE-sale {
+  border-radius: 6px;
+  background-color: #e7f4ff;
+  padding: 16px;
+}
+.DGE-container .DGE-danger {
+  border-radius: 6px;
+  background-color: #ffe7e7;
+  padding: 16px;
+}/*# sourceMappingURL=DeveloperGameEditor.css.map */
