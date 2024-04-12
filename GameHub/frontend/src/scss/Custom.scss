@@ -12,9 +12,11 @@
             border-width: 2px;
         }
     }
+
     .MuiInputBase-root:hover fieldset {
         border-color: #4b5ae6;
     }
+
     .MuiInputBase-root.Mui-focused fieldset {
         border-color: #3b4bd2;
         border-width: 3px;
@@ -32,6 +34,7 @@
         padding-right: 6px;
         left: -3px;
     }
+
     .MuiFormLabel-root.Mui-focused {
         color: #3b4bd2;
     }
@@ -95,4 +98,26 @@
     font-family: "Exo2", sefil;
     font-weight: 300;
     color: white;
+}
+
+.CSelect {
+    .MuiSelect-select {
+        font-family: 'Exo2';
+
+        background-color: white;
+    }
+
+    .MuiOutlinedInput-notchedOutline {
+        border-color: #2B3486;
+        border-width: 2px;
+    }
+}
+
+.CSelect.MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #3946b8;
+}
+
+.CSelect.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #2B3486;
+    border-width: 3px;
 }

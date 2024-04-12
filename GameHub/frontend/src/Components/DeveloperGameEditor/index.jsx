@@ -29,6 +29,9 @@ function DeveloperGameEditor() {
   if (user.init && !user.auth)
     window.location.assign('/');
 
+  if (user.init && user.auth && user.data.role !== "DEVELOPER")
+    window.location.replace('/');
+
   let gameid = window.location.pathname.split('/')[3];
 
   let descriptionText = "";
@@ -275,11 +278,11 @@ function DeveloperGameEditor() {
           )
       }
       <SaleDialog open={saleDialog} onCloseClick={() => setSaleDialog(false)} />
-      <Confirm 
-        open={deleteConfirm} 
-        onCancel={() => setDeleteConfirm(false)} 
+      <Confirm
+        open={deleteConfirm}
+        onCancel={() => setDeleteConfirm(false)}
         text={"Вы уверены что хотите удалить игру?"}
-        onConfirm={deteleGame}/>
+        onConfirm={deteleGame} />
     </div>
   )
 }

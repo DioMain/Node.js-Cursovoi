@@ -26,7 +26,7 @@ function Header() {
         case "DEVELOPER":
           return (<a href="/developer">Ваши игры</a>);
         case "ADMIN":
-          return (<a href="#t">Администрирование</a>);
+          return (<a href="/admin">Администрирование</a>);
         default:
           return null;
       }

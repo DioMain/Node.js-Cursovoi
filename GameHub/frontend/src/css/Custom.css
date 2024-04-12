@@ -72,4 +72,22 @@
   font-family: "Exo2", sefil;
   font-weight: 300;
   color: white;
+}
+
+.CSelect .MuiSelect-select {
+  font-family: "Exo2";
+  background-color: white;
+}
+.CSelect .MuiOutlinedInput-notchedOutline {
+  border-color: #2B3486;
+  border-width: 2px;
+}
+
+.CSelect.MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #3946b8;
+}
+
+.CSelect.MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #2B3486;
+  border-width: 3px;
 }/*# sourceMappingURL=Custom.css.map */

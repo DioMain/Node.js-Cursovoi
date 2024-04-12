@@ -1,7 +1,6 @@
 import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import * as React from 'react';
 
 function Confirm({ open, onCancel, onConfirm, text }) {
   return (

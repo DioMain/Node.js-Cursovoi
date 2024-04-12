@@ -5,6 +5,9 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import User from "./Components/User";
 import DeveloperGameList from './Components/DeveloperGameList';
+import DeveloperCreateGame from "./Components/DeveloperCreateGame";
+import DeveloperGameEditor from "./Components/DeveloperGameEditor";
+import AdminPanel from "./Components/AdminPanel";
 
 import "./css/App.css";
 import "./css/Custom.css";
@@ -12,8 +15,6 @@ import "./css/Buttons.css";
 
 import { useDispatch } from 'react-redux';
 import { setUser } from "./store/userSlice";
-import DeveloperCreateGame from "./Components/DeveloperCreateGame";
-import DeveloperGameEditor from "./Components/DeveloperGameEditor";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
             <Route path="/developer" element={<DeveloperGameList />} />
             <Route path="/developer/createGame" element={<DeveloperCreateGame />} />
             <Route path="/developer/editGame/*" element={<DeveloperGameEditor />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </BrowserRouter>
       </main>
