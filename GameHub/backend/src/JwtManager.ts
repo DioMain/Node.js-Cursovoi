@@ -1,27 +1,49 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 class JwtManager {
-    public secret: string;
+    public accessSecret: string;
+    public refreshSecret: string
 
-    constructor(secret: string) {
-        this.secret = secret;
+    constructor(accessSecret: string, refreshSecret: string) {
+        this.accessSecret = accessSecret;
+        this.refreshSecret = refreshSecret;
     }
 
-    GenerateToken(userId: number, userRole: string): string {
-        return jwt.sign({ userId, userRole }, this.secret, { expiresIn: '20min' });
+    GenerateAccessToken(userId: number): string {
+        return jwt.sign({ userId }, this.accessSecret, { expiresIn: '20min' });
     }
 
-    AuthenticateToken(token: string) {
+    GenerateRefreshToken(userId: number): string {
+        return jwt.sign({ userId }, this.refreshSecret, { expiresIn: '60min' });
+    }
+
+    AuthenticateAccessToken(token: string): JwtPayload | undefined {
         try {
-            return (jwt.verify(token, this.secret) as jwt.JwtPayload);
+            return (jwt.verify(token, this.accessSecret) as jwt.JwtPayload);
         }
         catch {
             return undefined;
         }
     }
 
-    IsValidToken(token: string) {
-        if (this.AuthenticateToken(token) == undefined)
+    AuthenticateRefreshToken(token: string): JwtPayload | undefined {
+        try {
+            return (jwt.verify(token, this.refreshSecret) as jwt.JwtPayload);
+        }
+        catch {
+            return undefined;
+        }
+    }
+
+    IsValidAccessToken(token: string): boolean {
+        if (this.AuthenticateAccessToken(token) == undefined)
+            return false;
+        else 
+            return true;
+    }
+
+    IsValidRefreshToken(token: string): boolean {
+        if (this.AuthenticateAccessToken(token) == undefined)
             return false;
         else 
             return true;

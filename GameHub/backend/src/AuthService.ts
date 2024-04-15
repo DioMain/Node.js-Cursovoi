@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import DataBase from "./DataBase";
 import JwtManager from "./JwtManager";
 import { user } from "@prisma/client";
@@ -12,18 +12,30 @@ class AuthService {
         this.jwt = jwt, this.db = db;
     }
 
-    async Auth(req: Request): Promise<user> {
-        if (this.jwt.IsValidToken(req.cookies.jwt)) {
-            let jwtdata = this.jwt.AuthenticateToken(req.cookies.jwt) as JwtPayload;
+    async Auth(req: Request, res: Response): Promise<user> {
+        let ajwt;
 
-            let user = await this.db.GetUser(jwtdata.userId);
+        if (!this.jwt.IsValidAccessToken(req.cookies.ajwt))  {
+            if (!this.jwt.IsValidAccessToken(req.cookies.rjwt))
+                throw "jwt";
 
-            if (user) 
-                return user;
-            else 
-                throw "User is not exist";
+            let rjwtdata = this.jwt.AuthenticateRefreshToken(req.cookies.rjwt) as JwtPayload;
+            
+            ajwt = this.jwt.GenerateAccessToken(rjwtdata.id);
+
+            res.cookie("ajwt", ajwt);
         }
-        else throw "jwt";
+        else 
+            ajwt = req.cookies.ajwt;
+
+        let jwtdata = this.jwt.AuthenticateAccessToken(ajwt) as JwtPayload;
+
+        let user = await this.db.GetUser(jwtdata.userId);
+
+        if (user)
+            return user;
+        else
+            throw "User is not exist";
     }
 }
 

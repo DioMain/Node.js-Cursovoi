@@ -21,7 +21,7 @@ class PaymentMethodController extends MVCController {
     @MapGet('/api/getpminfo')
     async GetPMInfo(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let wallet = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 0 } });
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
@@ -44,7 +44,7 @@ class PaymentMethodController extends MVCController {
     @MapPost('/api/tool/addmoney')
     async AddMoney(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let wallet = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 0 } });
 
@@ -65,7 +65,7 @@ class PaymentMethodController extends MVCController {
     @MapPost('/api/setusercart')
     async SetUserCart(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
 
@@ -92,7 +92,7 @@ class PaymentMethodController extends MVCController {
     @MapGet('/api/unlinkusercart')
     async UnlinkCart(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
 

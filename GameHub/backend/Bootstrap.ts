@@ -11,10 +11,10 @@ import AuthService from "./src/AuthService";
 
 ControllerImporter();
 
-const database = new DataBase();
+const database = new DataBase()
 const dataManager = new DataManager();
 const passwordHasher = new PassowordHasher("GAMEHUB");
-const jwtManager = new JwtManager("GAMEHUB");
+const jwtManager = new JwtManager("AGAMEHUB", "BGAMEHUB");
 const server = new Server(false);
 
 MVCManager.AddDependency("Jwt", jwtManager);

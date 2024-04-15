@@ -31,7 +31,7 @@ class GameController extends MVCController {
         let files = req.files as Express.Multer.File[];
 
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let gamef = new GameData();
 
@@ -69,7 +69,7 @@ class GameController extends MVCController {
     @MapGet('/api/getgamesbyuser')
     async GetGamesByUser(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let games = await this.db.Instance.game.findMany({ where: { User: user.id } });
 
@@ -125,7 +125,7 @@ class GameController extends MVCController {
         let files = req.files as Express.Multer.File[];
 
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let gameid = Number.parseInt(req.body.id as string);
 
@@ -203,7 +203,7 @@ class GameController extends MVCController {
     @MapRoute('/api/deletegame', MVCRouteMethod.DELETE)
     async DeleteGame(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
 
@@ -225,7 +225,7 @@ class GameController extends MVCController {
     @MapGet('/api/downloadgame')
     async DownloadGame(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let game = await this.db.Instance.game.findFirst({ where: { id: Number.parseInt(req.query.id as string) } }) as game;
 

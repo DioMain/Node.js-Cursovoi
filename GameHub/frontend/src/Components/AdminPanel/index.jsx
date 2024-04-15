@@ -22,6 +22,9 @@ function SearchBar() {
 function AdminPanel() {
   let user = useSelector(state => state.user);
 
+  if (user.init && !user.auth)
+    window.location.replace('/');
+
   if (user.init && user.auth && user.data.role !== "ADMIN")
     window.location.replace('/');
 

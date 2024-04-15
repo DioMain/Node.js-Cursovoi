@@ -6,6 +6,7 @@ import { Request, Response, response } from "express";
 import { DataManager, UserData } from "../DataManager";
 import PassowordHasher from "../PassowordHasher";
 import { user } from "@prisma/client";
+import AuthService from "../AuthService";
 
 
 @Controller
@@ -14,6 +15,7 @@ class UserController extends MVCController {
     public localData: DataManager;
     public jwt: JwtManager;
     public hasher: PassowordHasher;
+    public auth: AuthService;
 
     constructor() {
         super();
@@ -22,32 +24,20 @@ class UserController extends MVCController {
         this.jwt = this.UseDependency("Jwt");
         this.localData = this.UseDependency("Data");
         this.hasher = this.UseDependency("PasswordHasher");
+        this.auth = this.UseDependency("Auth");
     }
 
     @MapGet('/api/auth')
     async Auth(req: Request, res: Response) {
-        let token = req.cookies.jwt;
-
-        if (token == undefined) {
-            res.json({ auth: false });
-            return;
-        }
-
-        if (this.jwt?.IsValidToken(token)) {
-            let tokenData = this.jwt?.AuthenticateToken(token) as JwtPayload;
-
-            let user = await this.db?.GetUser(tokenData.userId) as user;
+        try {
+            let user = await this.auth.Auth(req, res);
             let userData = this.localData.GetUserData(user.id);
 
-            if (user !== null) {
-                res.json({ auth: true, data: { id: user.id, name: user.name, email: user.email, description: user.description, role: user.role, games: userData?.Games }});
-            }
-            else {
-                res.clearCookie('jwt');
-                res.json({ auth: false });
-            }      
+            res.json({ auth: true, data: { id: user.id, name: user.name, email: user.email, description: user.description, role: user.role, games: userData?.Games } });
         }
-        else {
+        catch (error) {
+            res.clearCookie('ajwt');
+            res.clearCookie('rjwt');
             res.json({ auth: false });
         }
     }
@@ -55,16 +45,20 @@ class UserController extends MVCController {
     @MapPost('/api/login')
     async Login(req: Request, res: Response) {
         try {
-            let user = await this.db.Instance.user.findFirst({ where: { 
-                email: req.body.email, password: this.hasher.HashPassword(req.body.password) 
-            }});
+            let user = await this.db.Instance.user.findFirst({
+                where: {
+                    email: req.body.email, password: this.hasher.HashPassword(req.body.password)
+                }
+            });
 
             if (user == null)
                 throw "Не верный пользователь или пароль!";
 
-            let token = this.jwt.GenerateToken(user?.id as number, user?.role as string);
+            let atoken = this.jwt.GenerateAccessToken(user?.id as number);
+            let rtoken = this.jwt.GenerateRefreshToken(user?.id as number);
 
-            res.cookie("jwt", token);
+            res.cookie("ajwt", atoken);
+            res.cookie("rjwt", rtoken);
 
             res.json({ success: true });
         }
@@ -76,24 +70,30 @@ class UserController extends MVCController {
     @MapPost('/api/register')
     async Registration(req: Request, res: Response) {
         try {
-            let checkedUser = await this.db.Instance.user.findFirst({ where: { 
-                email: req.body.email
-            }});
+            let checkedUser = await this.db.Instance.user.findFirst({
+                where: {
+                    email: req.body.email
+                }
+            });
 
             if (checkedUser != null)
                 throw "Пользователь с такой почтой уже существует!";
 
-            await this.db.Instance.user.create({ data: { 
-                email: req.body.email, name: req.body.nickname, password: this.hasher.HashPassword(req.body.password),
-                role: req.body.role
-            }});
+            await this.db.Instance.user.create({
+                data: {
+                    email: req.body.email, name: req.body.nickname, password: this.hasher.HashPassword(req.body.password),
+                    role: req.body.role
+                }
+            });
 
-            let user = await this.db.Instance.user.findFirst({ where: { 
-                email: req.body.email
-            }});
+            let user = await this.db.Instance.user.findFirst({
+                where: {
+                    email: req.body.email
+                }
+            });
 
             if (user) {
-                await this.db.Instance.paymentmethod.create({ data: {  User: user.id, type: 0, currency: "USD" }});
+                await this.db.Instance.paymentmethod.create({ data: { User: user.id, type: 0, currency: "USD" } });
             }
 
             let nuserdata = new UserData();
@@ -104,9 +104,11 @@ class UserController extends MVCController {
 
             this.localData.SetUserData(nuserdata);
 
-            let token = this.jwt.GenerateToken(user?.id as number, user?.role as string);
+            let atoken = this.jwt.GenerateAccessToken(user?.id as number);
+            let rtoken = this.jwt.GenerateRefreshToken(user?.id as number);
 
-            res.cookie("jwt", token);
+            res.cookie("ajwt", atoken);
+            res.cookie("rjwt", rtoken);
 
             res.json({ success: true });
         }

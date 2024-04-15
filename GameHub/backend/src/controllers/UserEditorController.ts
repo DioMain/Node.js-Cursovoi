@@ -28,7 +28,7 @@ class UserEditorController extends MVCController {
 
     async EditUser(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             let nData = new UserData();
 
@@ -64,7 +64,7 @@ class UserEditorController extends MVCController {
     @MapRoute('/api/deleteuser', MVCRouteMethod.DELETE)
     async DeleteUser(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
 
             this.dataManager.DeleteUserData(user.id);
 

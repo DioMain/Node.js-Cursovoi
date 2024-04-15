@@ -25,7 +25,7 @@ class SaleController extends MVCController {
     @MapPost('/api/game/setsale')
     async SetSale(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
             let game = await this.db.GetGame(req.body.gameId)
 
             if (game?.User == user.id) {
@@ -49,7 +49,7 @@ class SaleController extends MVCController {
     @MapRoute('/api/game/dropsale', MVCRouteMethod.DELETE)
     async DropSale(req: Request, res: Response) {
         try {
-            let user = await this.auth.Auth(req);
+            let user = await this.auth.Auth(req, res);
             let game = await this.db.GetGame(req.body.gameId)
 
             if (game?.User == user.id) {
