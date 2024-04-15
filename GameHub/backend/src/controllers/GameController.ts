@@ -71,10 +71,9 @@ class GameController extends MVCController {
         try {
             let user = await this.auth.Auth(req, res);
 
-            let games = await this.db.Instance.game.findMany({ where: { User: user.id } });
+            let games = await this.db.Instance.game.findMany({ where: { User: user.id }, include: { sale_sale_gameTogame: true } });
 
             const gamesWithPath = games.map(game => {
-
                 return {
                     id: game.id,
                     name: game.name,
@@ -85,7 +84,8 @@ class GameController extends MVCController {
                     tags: game.tags,
                     iconImageUrl: `/games/${game.id}/iconimage.png`,
                     cartImageUrl: `/games/${game.id}/cartimage.png`,
-                    libImageUrl: `/games/${game.id}/libimage.png`
+                    libImageUrl: `/games/${game.id}/libimage.png`,
+                    sale: game.sale_sale_gameTogame[0]
                 }
             });
 
@@ -97,8 +97,7 @@ class GameController extends MVCController {
 
     @MapGet('/api/getgameinfo')
     async GetGameInfo(req: Request, res: Response) {
-        let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
-        let gameSale = await this.db.Instance.sale.findFirst({ where: { game: game?.id } });
+        let game = await this.db.GetGame(Number.parseInt(req.query.id as string));
 
         if (game) {
             const gamesWithPath = {
@@ -112,7 +111,7 @@ class GameController extends MVCController {
                 iconImageUrl: `/games/${game.id}/iconimage.png`,
                 cartImageUrl: `/games/${game.id}/cartimage.png`,
                 libImageUrl: `/games/${game.id}/libimage.png`,
-                sale: gameSale
+                sale: game.sale_sale_gameTogame[0]
             }
 
             res.json({ ok: true, game: gamesWithPath });
@@ -207,7 +206,7 @@ class GameController extends MVCController {
 
             let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
 
-            if (game.User == user.id) {
+            if (user.role === "ADMIN" || (user.role === "DEVELOPER" && game.User == user.id)) {
                 this.dataManager.DeleteGameData(game.id);
 
                 await this.db.DeteleGame(game.id);
@@ -239,6 +238,27 @@ class GameController extends MVCController {
         }
         catch (error) {
             res.redirect('/');
+        }
+    }
+
+    @MapRoute('/api/setgamestate', MVCRouteMethod.PUT)
+    async SetGameState(req: Request, res: Response) {
+        try {
+            let user = await this.auth.Auth(req, res);
+
+            if (user.role === "ADMIN") {
+                await this.db.Instance.game.update({
+                    where: { id: req.body.id },
+                    data: { state: req.body.state }
+                });
+
+                res.json({ ok: true });
+            }
+            else throw "Uncorrect user";
+
+        }
+        catch (error) {
+            res.json({ ok: false, error: error });
         }
     }
 }

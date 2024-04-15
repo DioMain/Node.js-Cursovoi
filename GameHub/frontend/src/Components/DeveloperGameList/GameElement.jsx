@@ -4,24 +4,18 @@ import IconButton from '@mui/material/IconButton'
 import DownloadIcon from '@mui/icons-material/Download';
 import Tooltip from '@mui/material/Tooltip'
 
-import { setGame } from "./../../store/gameSlice";
-
-
-import { useDispatch } from 'react-redux';
 
 
 function GameElement({ game }) {
 
-  const dispatch = useDispatch();
-
   const getState = (state) => {
     switch (state) {
       case 0:
-        return (<div style={{ color: "gray" }}>На расмотрении</div>)
+        return (<div style={{ color: "white" }}>На расмотрении</div>)
       case 1:
         return (<div style={{ color: "green" }}>Доступна всем</div>)
       case 2:
-        return (<div style={{ color: "yellow" }}>Ограниченый доспут</div>)
+        return (<div style={{ color: "#d67c15" }}>Ограниченый доспут</div>)
       case 3:
         return (<div style={{ color: "red" }}>Заблокированна</div>)
     }
@@ -32,8 +26,6 @@ function GameElement({ game }) {
   }
 
   const editGame = () => {
-    dispatch(setGame({ data: game }));
-
     window.location.replace(`/developer/editGame/${game.id}`);
   }
 
@@ -72,12 +64,22 @@ function GameElement({ game }) {
                 game.priceusd === "0" ?
                   <h4>Бесплатная</h4>
                   :
-                  <h3>$ {game.priceusd}</h3>
+                  (
+                    game.sale ?
+                      <Tooltip title={game.sale.cause}>
+                        <Stack direction={"row"} spacing={1}>
+                          <h3>$ <span style={{ textDecorationLine: "line-through" }}>{game.priceusd}</span></h3>
+                          <h5>$ {game.priceusd * (1 - game.sale.percent)}</h5>
+                        </Stack>
+                      </Tooltip>
+                      :
+                      <h3>$ {game.priceusd}</h3>
+                  )
               }
             </Stack>
-            
+
             <Stack direction={"row"} justifyContent={"end"} style={{ fontWeight: "500", fontStyle: "italic" }}>
-              {getState(game.state)}
+              <div style={{ backgroundColor: "#b8b8b8", borderRadius: "4px", padding: "4px"}}>{getState(game.state)}</div>
             </Stack>
 
           </Stack>

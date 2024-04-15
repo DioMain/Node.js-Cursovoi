@@ -17,7 +17,7 @@ class DataBase {
     }
 
     async GetGame(id: number) {
-        return await this.Instance.game.findFirst({ where: { id: id } });
+        return await this.Instance.game.findFirst({ where: { id: id }, include: { sale_sale_gameTogame: true } });
     }
 
     async DeteleUser(id: number) {
@@ -41,7 +41,7 @@ class DataBase {
         await this.Instance.game.delete({ where: { id: id } });
     }
 
-    async GetGames(gamesIds: Array<number>) {
+    async GetGamesByIds(gamesIds: Array<number>) {
         let games = new Array<game>();
 
         gamesIds.forEach(async i => {
@@ -51,6 +51,44 @@ class DataBase {
         });
 
         return games;
+    }
+
+    async GetGames() {
+        return await this.Instance.game.findMany({
+            include: { sale_sale_gameTogame: true }
+        });
+    }
+
+    async GetGamesByStateAndName(state: number, name: string) {
+        return await this.Instance.game.findMany({ 
+            where: {
+                name: {
+                    startsWith: name
+                },
+                state: state
+            },
+            include: { sale_sale_gameTogame: true }
+        });
+    }
+
+    async GetGamesByState(state: number) {
+        return await this.Instance.game.findMany({ 
+            where: {
+                state: state
+            },
+            include: { sale_sale_gameTogame: true }
+        });
+    }
+
+    async GetGamesByName(name: string) {
+        return await this.Instance.game.findMany({ 
+            where: {
+                name: {
+                    startsWith: name
+                }
+            },
+            include: { sale_sale_gameTogame: true }
+        });
     }
 }
 

@@ -38,6 +38,7 @@ class UserController extends MVCController {
         catch (error) {
             res.clearCookie('ajwt');
             res.clearCookie('rjwt');
+            
             res.json({ auth: false });
         }
     }
@@ -119,7 +120,8 @@ class UserController extends MVCController {
 
     @MapGet('/api/logout')
     Logout(req: Request, res: Response) {
-        res.clearCookie("jwt");
+        res.clearCookie("ajwt");
+        res.clearCookie("rjwt");
 
         res.redirect("/");
     }

@@ -16,7 +16,7 @@ class AuthService {
         let ajwt;
 
         if (!this.jwt.IsValidAccessToken(req.cookies.ajwt))  {
-            if (!this.jwt.IsValidAccessToken(req.cookies.rjwt))
+            if (!this.jwt.IsValidRefreshToken(req.cookies.rjwt))
                 throw "jwt";
 
             let rjwtdata = this.jwt.AuthenticateRefreshToken(req.cookies.rjwt) as JwtPayload;
