@@ -47,28 +47,14 @@ class GameSeachController extends MVCController {
             else
                 games = await this.db.GetGames();
 
-            const gamesWithPath = games.map((game) => {
-                return {
-                    id: game.id,
-                    name: game.name,
-                    description: game.description,
-                    priceusd: game.priceusd,
-                    state: game.state,
-                    User: game.User,
-                    tags: game.tags,
-                    iconImageUrl: `/games/${game.id}/iconimage.png`,
-                    cartImageUrl: `/games/${game.id}/cartimage.png`,
-                    libImageUrl: `/games/${game.id}/libimage.png`,
-                    sale: game.sale_sale_gameTogame[0]
-                }
-            }).filter((value, index) => {
+            const preparedGames = games.map((game) => DataBase.PrepareGameInformation(game)).filter((value, index) => {
                 if (index < (page - 1) * this.PageSize || index >= page * this.PageSize)
                     return false;
 
                 return true;
             });
 
-            res.json({ ok: true, games: gamesWithPath, pagesCount: Math.ceil(games.length / this.PageSize) });
+            res.json({ ok: true, games: preparedGames, pagesCount: Math.ceil(games.length / this.PageSize) });
         }
         catch (error) {
             res.json({ ok: false, error: error });

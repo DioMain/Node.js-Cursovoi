@@ -1,0 +1,27 @@
+.catalog-container {
+  margin-left: 180px;
+  margin-right: 180px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.catalog-container .catalog-toolpanel {
+  background-color: #9db3db;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.catalog-filter-drawer .catalog-filter-drawer-container {
+  color: white;
+}
+.catalog-filter-drawer .MuiDrawer-paper {
+  background-color: #111138;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 250px;
+  height: -moz-fit-content;
+  height: fit-content;
+  border-radius: 6px;
+  padding: 16px;
+  padding-top: 2px;
+  padding-right: 2px;
+}/*# sourceMappingURL=Catalog.css.map */

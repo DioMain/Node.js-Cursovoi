@@ -73,23 +73,9 @@ class GameController extends MVCController {
 
             let games = await this.db.Instance.game.findMany({ where: { User: user.id }, include: { sale_sale_gameTogame: true } });
 
-            const gamesWithPath = games.map(game => {
-                return {
-                    id: game.id,
-                    name: game.name,
-                    description: game.description,
-                    priceusd: game.priceusd,
-                    state: game.state,
-                    User: game.User,
-                    tags: game.tags,
-                    iconImageUrl: `/games/${game.id}/iconimage.png`,
-                    cartImageUrl: `/games/${game.id}/cartimage.png`,
-                    libImageUrl: `/games/${game.id}/libimage.png`,
-                    sale: game.sale_sale_gameTogame[0]
-                }
-            });
+            const preparedGames = games.map(game => DataBase.PrepareGameInformation(game));
 
-            res.json({ ok: true, games: gamesWithPath });
+            res.json({ ok: true, games: preparedGames });
         } catch (error) {
             res.json({ ok: false, error: error });
         }
@@ -100,21 +86,9 @@ class GameController extends MVCController {
         let game = await this.db.GetGame(Number.parseInt(req.query.id as string));
 
         if (game) {
-            const gamesWithPath = {
-                id: game.id,
-                name: game.name,
-                description: game.description,
-                priceusd: game.priceusd,
-                state: game.state,
-                User: game.User,
-                tags: game.tags,
-                iconImageUrl: `/games/${game.id}/iconimage.png`,
-                cartImageUrl: `/games/${game.id}/cartimage.png`,
-                libImageUrl: `/games/${game.id}/libimage.png`,
-                sale: game.sale_sale_gameTogame[0]
-            }
+            const preparedGame = DataBase.PrepareGameInformation(game);
 
-            res.json({ ok: true, game: gamesWithPath });
+            res.json({ ok: true, game: preparedGame });
         }
         else
             res.json({ ok: false, error: "Game not found" });

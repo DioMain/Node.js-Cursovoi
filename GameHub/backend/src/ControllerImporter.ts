@@ -1,4 +1,5 @@
 import AppController from "./controllers/AppController";
+import CatalogController from "./controllers/CatalogController";
 import GameController from "./controllers/GameController";
 import GameSeachController from "./controllers/GameSeachController";
 import PaymentMethodController from "./controllers/PaymentMethodController";
@@ -14,4 +15,5 @@ export default function () {
     GameController;
     SaleController;
     GameSeachController;
+    CatalogController;
 }

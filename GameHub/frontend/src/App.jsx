@@ -15,6 +15,7 @@ import "./css/Buttons.css";
 
 import { useDispatch } from 'react-redux';
 import { setUser } from "./store/userSlice";
+import Catalog from "./Components/Catalog";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,8 +39,10 @@ function App() {
       <main>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Catalog />} /> {/* TODO */}
+            <Route path="/game/*" element={<Index />} /> {/* TODO */}
             <Route path="/user" element={<User />} />
+            <Route path="/libriary" element={<Index />} /> {/* TODO */}
             <Route path="/developer" element={<DeveloperGameList />} />
             <Route path="/developer/createGame" element={<DeveloperCreateGame />} />
             <Route path="/developer/editGame/*" element={<DeveloperGameEditor />} />

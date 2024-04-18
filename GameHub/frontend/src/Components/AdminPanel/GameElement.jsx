@@ -8,6 +8,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { useCallback } from 'react';
+import HomeIcon from '@mui/icons-material/Home';
 
 function GameElement({ game, onChangeGameState }) {
   const getState = (state) => {
@@ -179,12 +180,18 @@ function GameElement({ game, onChangeGameState }) {
             </Stack>
 
             <Stack direction={"row"} justifyContent={"end"} style={{ fontWeight: "500", fontStyle: "italic" }}>
-              <div style={{ backgroundColor: "#b8b8b8", borderRadius: "4px", padding: "4px"}}>{getState(game.state)}</div>
+              <div style={{ backgroundColor: "#b8b8b8", borderRadius: "4px", padding: "4px" }}>{getState(game.state)}</div>
             </Stack>
 
           </Stack>
 
           <Stack direction={"row"} justifyContent={"end"}>
+
+            <Tooltip title="Перейти на страницу">
+              <IconButton onClick={null}>
+                <HomeIcon sx={{ color: "black" }} />
+              </IconButton>
+            </Tooltip>
 
             <Tooltip title="Скачать игру">
               <IconButton onClick={downloadGame}>

@@ -1,20 +1,24 @@
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import LinearProgress from '@mui/joy/LinearProgress';
+import Alert from '@mui/material/Alert';
 import TextArea from '@mui/joy/Textarea';
-import { useSelector, useDispatch } from "react-redux";
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider';
 
 import FileInput from '../Common/FileInput';
 import './../../css/DeveloperGameEditor.css'
 import { setGame } from '../../store/gameSlice';
-import GameElement from '../DeveloperGameList/GameElement';
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider';
-import { useCallback, useState } from 'react';
+import GameElement from '../Catalog/GameElement';
 import SaleDialog from './SaleDialog';
 import Numeritic from '../Common/Numeritic';
 import Confirm from '../Common/Confirm';
 
+import { useSelector, useDispatch } from "react-redux";
+import { useCallback, useState } from 'react';
+
+let descriptionText = "";
+let tagsText = "";
 
 function DeveloperGameEditor() {
   const dispatch = useDispatch();
@@ -33,9 +37,6 @@ function DeveloperGameEditor() {
     window.location.replace('/');
 
   let gameid = window.location.pathname.split('/')[3];
-
-  let descriptionText = "";
-  let tagsText = "";
 
   if (user.init && !game.init) {
     fetch(`/api/getgameinfo?id=${gameid}`)
@@ -146,6 +147,21 @@ function DeveloperGameEditor() {
       });
   });
 
+  const getWarningByState = (state) => {
+    switch (state) {
+      case 0:
+        return (<Alert severity='info'>Ваша игра находиться на проверке.</Alert>)
+      case 1:
+        return (<Alert severity='success'>Ваша игра доступна всем для просмотра, скачивания и покупки.</Alert>)
+      case 2:
+        return (<Alert severity='warning'>С вашей игрой связаны некоторые проблемы.<br/> 
+        Игра не будет отображаться в каталоге и не доступна для покупки, однако доспутна тем кто её купил.</Alert>)
+      case 3:
+        return (<Alert severity='error'>Ваша игра нарушает приципы сообщества. Игра никому не доспуна.<br/>
+                Но вы всё ещё можете просматривать страницу и скачивать игру с сервера</Alert>)
+    }
+  };
+
   const deteleGame = useCallback(() => {
     fetch(`/api/deletegame?id=${game.data.id}`, {
       method: "DELETE",
@@ -174,7 +190,7 @@ function DeveloperGameEditor() {
                   </div>
                 </Stack>
 
-                <GameElement game={game.data} />
+                <GameElement game={game.data} onClick={() => null} />
 
                 <Stack direction={'row'} justifyContent={"center"}>
                   <Stack className='DGE-Libriary' direction={'row'} spacing={1}>
@@ -184,8 +200,7 @@ function DeveloperGameEditor() {
                 </Stack>
 
                 <Divider />
-                <h3>Стастус: <span style={{ fontStyle: "italic" }}>{getState(game.data.state)}</span></h3>
-
+                {getWarningByState(game.data.state)}
                 <Divider />
                 <Stack spacing={3}>
                   <Stack direction={'row'} spacing={3}>

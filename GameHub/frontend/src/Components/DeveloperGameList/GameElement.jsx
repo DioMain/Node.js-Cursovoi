@@ -3,7 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton'
 import DownloadIcon from '@mui/icons-material/Download';
 import Tooltip from '@mui/material/Tooltip'
-
+import HomeIcon from '@mui/icons-material/Home';
 
 
 function GameElement({ game }) {
@@ -79,12 +79,18 @@ function GameElement({ game }) {
             </Stack>
 
             <Stack direction={"row"} justifyContent={"end"} style={{ fontWeight: "500", fontStyle: "italic" }}>
-              <div style={{ backgroundColor: "#b8b8b8", borderRadius: "4px", padding: "4px"}}>{getState(game.state)}</div>
+              <div style={{ backgroundColor: "#b8b8b8", borderRadius: "4px", padding: "4px" }}>{getState(game.state)}</div>
             </Stack>
 
           </Stack>
 
           <Stack direction={"row"} justifyContent={"end"}>
+
+            <Tooltip title="Перейти на страницу">
+              <IconButton onClick={null}>
+                <HomeIcon sx={{ color: "black" }} />
+              </IconButton>
+            </Tooltip>
 
             <Tooltip title="Скачать игру">
               <IconButton onClick={downloadGame}>

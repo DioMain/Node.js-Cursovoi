@@ -1,4 +1,4 @@
-import { PrismaClient, game } from "@prisma/client";
+import { PrismaClient, game, review } from "@prisma/client";
 
 class DataBase {
 
@@ -17,7 +17,10 @@ class DataBase {
     }
 
     async GetGame(id: number) {
-        return await this.Instance.game.findFirst({ where: { id: id }, include: { sale_sale_gameTogame: true } });
+        return await this.Instance.game.findFirst({ 
+            where: { id: id }, 
+            include: { sale_sale_gameTogame: true, review_review_gameTogame: true }
+        });
     }
 
     async DeteleUser(id: number) {
@@ -45,7 +48,7 @@ class DataBase {
         let games = new Array<game>();
 
         gamesIds.forEach(async i => {
-            let game = await this.Instance.game.findFirst({ where: { id: i } });
+            let game = await this.Instance.game.findFirst({ where: { id: i }, include: { sale_sale_gameTogame: true, review_review_gameTogame: true } });
 
             games.push(game as game);
         });
@@ -55,7 +58,7 @@ class DataBase {
 
     async GetGames() {
         return await this.Instance.game.findMany({
-            include: { sale_sale_gameTogame: true }
+            include: { sale_sale_gameTogame: true, review_review_gameTogame: true }
         });
     }
 
@@ -67,7 +70,7 @@ class DataBase {
                 },
                 state: state
             },
-            include: { sale_sale_gameTogame: true }
+            include: { sale_sale_gameTogame: true, review_review_gameTogame: true }
         });
     }
 
@@ -76,7 +79,7 @@ class DataBase {
             where: {
                 state: state
             },
-            include: { sale_sale_gameTogame: true }
+            include: { sale_sale_gameTogame: true, review_review_gameTogame: true }
         });
     }
 
@@ -87,8 +90,38 @@ class DataBase {
                     startsWith: name
                 }
             },
-            include: { sale_sale_gameTogame: true }
+            include: { sale_sale_gameTogame: true, review_review_gameTogame: true }
         });
+    }
+
+    // Пока не знаю куда засунуть этот метод
+    public static PrepareGameInformation(game: game) {
+        let reviews = (game as any).review_review_gameTogame as review[];
+
+        let middleMark = -1;
+
+        if (reviews && reviews.length > 0) {
+            reviews.forEach(review => middleMark += review.mark);
+
+            middleMark /= reviews.length;
+        }
+
+        const gamesWithPath = {
+            id: game.id,
+            name: game.name,
+            description: game.description,
+            priceusd: game.priceusd,
+            state: game.state,
+            User: game.User,
+            tags: game.tags,
+            iconImageUrl: `/games/${game.id}/iconimage.png`,
+            cartImageUrl: `/games/${game.id}/cartimage.png`,
+            libImageUrl: `/games/${game.id}/libimage.png`,
+            sale: (game as any).sale_sale_gameTogame[0],
+            middleMark: middleMark
+        }
+
+        return gamesWithPath;
     }
 }
 

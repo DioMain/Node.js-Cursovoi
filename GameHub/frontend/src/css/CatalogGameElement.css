@@ -1,0 +1,29 @@
+.CatalogGameElement-container {
+  padding: 6px;
+  background-color: gainsboro;
+  border-radius: 6px;
+  animation: CatalogGameElement_fade_out linear 0.1s 1;
+}
+
+.CatalogGameElement-container:hover {
+  background-color: rgb(200, 200, 200);
+  cursor: pointer;
+  animation: CatalogGameElement_fade_in linear 0.1s 1;
+}
+
+@keyframes CatalogGameElement_fade_in {
+  from {
+    background-color: gainsboro;
+  }
+  to {
+    background-color: rgb(200, 200, 200);
+  }
+}
+@keyframes CatalogGameElement_fade_out {
+  from {
+    background-color: rgb(200, 200, 200);
+  }
+  to {
+    background-color: gainsboro;
+  }
+}/*# sourceMappingURL=CatalogGameElement.css.map */

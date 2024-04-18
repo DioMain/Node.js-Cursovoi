@@ -1,0 +1,40 @@
+.catalog-container {
+    margin-left: 180px;
+    margin-right: 180px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+    .catalog-games-container {}
+
+    .catalog-toolpanel {
+        background-color: #9db3db;
+
+        padding: 10px;
+
+        border-radius: 6px;
+    }
+}
+
+.catalog-filter-drawer {
+
+    .catalog-filter-drawer-container {
+        color: white;
+    }
+
+    .MuiDrawer-paper {
+        background-color: #111138;
+
+        margin-left: 10px;
+        margin-top: 10px;
+
+        width: 250px;
+
+        height: fit-content;
+
+        border-radius: 6px;
+
+        padding: 16px;
+        padding-top: 2px;
+        padding-right: 2px;
+    }
+}
