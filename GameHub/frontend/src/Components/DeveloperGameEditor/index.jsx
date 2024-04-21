@@ -56,19 +56,6 @@ function DeveloperGameEditor() {
     tagsText = game.data.tags;
   }
 
-  const getState = (state) => {
-    switch (state) {
-      case 0:
-        return (<div style={{ color: "gray" }}>На расмотрении</div>)
-      case 1:
-        return (<div style={{ color: "green" }}>Доступна всем</div>)
-      case 2:
-        return (<div style={{ color: "yellow" }}>Ограниченый доспут</div>)
-      case 3:
-        return (<div style={{ color: "red" }}>Заблокированна</div>)
-    }
-  }
-
   const updateGame = useCallback(() => {
     let nameField = document.getElementById('name');
     let priceField = document.getElementById('price');

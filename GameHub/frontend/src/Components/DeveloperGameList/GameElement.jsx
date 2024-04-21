@@ -87,7 +87,7 @@ function GameElement({ game }) {
           <Stack direction={"row"} justifyContent={"end"}>
 
             <Tooltip title="Перейти на страницу">
-              <IconButton onClick={null}>
+              <IconButton onClick={() => window.location.replace(`/game/${game.id}`)}>
                 <HomeIcon sx={{ color: "black" }} />
               </IconButton>
             </Tooltip>

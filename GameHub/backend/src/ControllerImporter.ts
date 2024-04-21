@@ -1,6 +1,7 @@
 import AppController from "./controllers/AppController";
 import CatalogController from "./controllers/CatalogController";
 import GameController from "./controllers/GameController";
+import GamePageController from "./controllers/GamePageController";
 import GameSeachController from "./controllers/GameSeachController";
 import PaymentMethodController from "./controllers/PaymentMethodController";
 import SaleController from "./controllers/SaleController";
@@ -16,4 +17,5 @@ export default function () {
     SaleController;
     GameSeachController;
     CatalogController;
+    GamePageController;
 }

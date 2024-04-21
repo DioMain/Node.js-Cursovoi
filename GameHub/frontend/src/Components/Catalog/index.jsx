@@ -59,9 +59,8 @@ function Catalog() {
     getGames();
   });
 
-  //TODO
   const gameClickCallback = useCallback((game) => {
-    console.log(game);
+    window.location.replace(`/game/${game.id}`);
   });
 
   const paginationChangeCallback = useCallback((evt, newpage) => {

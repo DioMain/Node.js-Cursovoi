@@ -1,0 +1,98 @@
+.GamePage-container {
+    margin-left: 180px;
+    margin-right: 180px;
+
+    margin-top: 12px;
+    margin-bottom: 12px;
+
+    background-color: ghostwhite;
+
+    .GamePage-title {
+        height: 220px;
+        overflow: hidden;
+        position: relative;
+
+        .GamePage-title-text {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+
+            padding: 6px;
+
+            h1 {
+                text-shadow: 0 0 3px;
+                opacity: 1;
+                color: white;
+            }
+        }
+
+        .GamePage-title-mark {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+
+            padding: 2px;
+
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+
+            h5 {
+                padding: 2px;
+                color: white;
+            }
+        }
+
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .GamePage-main {
+        padding: 12px;
+
+        .GamePage-main-description {
+            padding: 8px;
+            font-size: large;
+
+            border-radius: 6px;
+
+            background-color: rgb(232, 232, 255);
+        }
+
+        .GamePage-main-buy {
+            padding: 8px;
+            font-size: large;
+
+            border-radius: 6px;
+
+            background-color: rgb(232, 232, 255);
+
+            p {
+                font-size: 16px;
+
+                margin-right: 6px;
+
+                background-color: rgba(255, 255, 255, 0.5);
+
+                border-radius: 8px;
+                padding: 6px;
+            }
+        }
+    }
+
+    .GamePage-review {
+        padding: 6px;
+
+        margin: 12px;
+
+        font-size: large;
+
+        border-radius: 6px;
+
+        background-color: rgb(232, 232, 255);
+    }
+}
