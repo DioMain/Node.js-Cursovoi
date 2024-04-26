@@ -36,11 +36,6 @@ class LibriaryController extends MVCController {
         else 
             res.json({ ok: false })
     }
-
-    @MapPost('/api/libriary/downloadgame')
-    async DownloadGame(req : Request, res : Response) {
-        
-    }
 }
 
 export default LibriaryController;

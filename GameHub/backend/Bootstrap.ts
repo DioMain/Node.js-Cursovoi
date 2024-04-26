@@ -13,7 +13,7 @@ const dataManager = new DataManager();
 const database = new DataBase(dataManager);
 const passwordHasher = new PassowordHasher("GAMEHUB");
 const jwtManager = new JwtManager("AGAMEHUB", "BGAMEHUB");
-const server = new Server(false);
+const server = new Server(true);
 
 MVCManager.AddDependency("Jwt", jwtManager);
 MVCManager.AddDependency("PasswordHasher", passwordHasher);

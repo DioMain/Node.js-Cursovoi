@@ -5,15 +5,17 @@
         background-color: #111138;
         border-radius: 6px;
 
+        min-width: 250px;
+
         padding: 6px;
 
         color: white;
     }
 
     .Libriary-game {
+        width: 81%;
 
         .Libriary-game-title {
-            width: max;
             height: 220px;
             overflow: hidden;
             position: relative;
@@ -39,6 +41,14 @@
                 width: 100%;
                 object-fit: cover;
             }
+        }
+
+        .Libriary-game-panel {
+            padding: 8px;
+
+            background-color: #111138;
+
+            border-radius: 6px;
         }
     }
 }

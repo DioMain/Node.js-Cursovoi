@@ -29,7 +29,7 @@ function GamePage() {
   let user = useSelector(state => state.user);
 
   const reviewSocketMain = useCallback(() => {
-    let socket = new WebSocket(`ws://localhost:5000/game/reviews/${game.id}`);
+    let socket = new WebSocket(`wss://localhost:5000/game/reviews/${game.id}`);
 
     socket.onopen = (evt) => {
       console.log("Open!");

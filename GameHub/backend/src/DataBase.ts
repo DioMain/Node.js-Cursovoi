@@ -32,8 +32,13 @@ class DataBase {
 
         this.data.DeleteUserData(id);
 
-        (await this.Instance.game.findMany({ where: { User: id } }))
-            .forEach(async game => await this.DeteleGame(game.id));
+        let userGames = await this.Instance.game.findMany({ where: { User: id } });
+
+        for (let i = 0; i < userGames.length; i++) {
+            const element = userGames[i];
+
+            await this.DeteleGame(element.id);
+        }
 
         await this.Instance.paymentmethod.deleteMany({ where: { User: id } });
         await this.Instance.review.deleteMany({ where: { User: id } });
@@ -57,7 +62,15 @@ class DataBase {
         let games = new Array<game>();
 
         for (let i = 0; i < gamesIds.length; i++) {
-            games.push(await this.GetGame(gamesIds[i]) as game);  
+            let game = await this.GetGame(gamesIds[i]) as game;
+
+            if (!game)
+                continue;
+
+            if (game.state == 0 || game.state == 3)
+                continue;
+
+            games.push(game);  
         }
 
         return games;

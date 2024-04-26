@@ -207,6 +207,16 @@ class GameController extends MVCController {
 
                 res.download(`${gamedata?.GameFilePath}`);
             }
+            else if (user.role === "USER") {
+                let usrdata = this.dataManager.GetUserData(user.id);
+
+                if (!usrdata?.Games?.some(id => game.id == id))
+                    throw null;
+
+                let gamedata = this.dataManager.GetGameData(game.id);
+
+                res.download(`${gamedata?.GameFilePath}`);
+            }
             else throw null;
         }
         catch (error) {

@@ -4,11 +4,14 @@
 .Libriary-container .Libriary-gamelist {
   background-color: #111138;
   border-radius: 6px;
+  min-width: 250px;
   padding: 6px;
   color: white;
 }
+.Libriary-container .Libriary-game {
+  width: 81%;
+}
 .Libriary-container .Libriary-game .Libriary-game-title {
-  width: max;
   height: 220px;
   overflow: hidden;
   position: relative;
@@ -30,4 +33,9 @@
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.Libriary-container .Libriary-game .Libriary-game-panel {
+  padding: 8px;
+  background-color: #111138;
+  border-radius: 6px;
 }/*# sourceMappingURL=Libriary.css.map */
