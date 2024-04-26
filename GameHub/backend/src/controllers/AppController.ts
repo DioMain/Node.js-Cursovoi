@@ -1,24 +1,10 @@
 import { Request, Response } from "express";
 import { Controller, MVCController, MapGet } from "../MVC";
-import Server from "../Server";
-import JwtManager from "../JwtManager";
-import { DataManager } from "../DataManager";
-import DataBase from "../DataBase";
 
 @Controller
 class AppController extends MVCController {
-    public db: DataBase;
-    public dataManager: DataManager;
-    public jwt: JwtManager;
-    public server: Server;
-
     constructor() {
         super();
-
-        this.db = this.UseDependency("DataBase");
-        this.dataManager = this.UseDependency("Data");
-        this.jwt = this.UseDependency("Jwt");
-        this.server = this.UseDependency("Server");
     }
 
     @MapGet('/')
@@ -38,6 +24,26 @@ class AppController extends MVCController {
 
     @MapGet('/developer/createGame')
     Index3(req: Request, res: Response) {
+        this.EndView(res);
+    }
+
+    @MapGet('/developer/editGame/*')
+    Index4(req: Request, res: Response) {
+        this.EndView(res);
+    }
+
+    @MapGet('/game/*')
+    Index5(req: Request, res: Response) {
+        this.EndView(res);
+    }
+
+    @MapGet('/libriary')
+    Index6(req: Request, res: Response) {
+        this.EndView(res);
+    }
+
+    @MapGet('/admin')
+    Index7(req: Request, res: Response) {
         this.EndView(res);
     }
 }

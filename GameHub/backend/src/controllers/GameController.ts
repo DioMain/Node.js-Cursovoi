@@ -4,16 +4,16 @@ import { DataManager, GameData } from "../DataManager";
 import { Controller, MVCController, MVCRouteMethod, MapGet, MapPost, MapRoute } from "../MVC";
 import Server from "../Server";
 import fs from "fs";
-import { game } from "@prisma/client";
+import { game, user } from "@prisma/client";
 import AuthService from "../AuthService";
 
 @Controller
 class GameController extends MVCController {
 
-    public db: DataBase;
-    public dataManager: DataManager;
-    public server: Server;
-    public auth: AuthService;
+    private db: DataBase;
+    private dataManager: DataManager;
+    private server: Server;
+    private auth: AuthService;
 
     constructor() {
         super();
@@ -87,8 +87,9 @@ class GameController extends MVCController {
 
         if (game) {
             const preparedGame = DataBase.PrepareGameInformation(game);
+            const developer = DataBase.PrepareUserInformation((await this.db.GetUser(game.User)) as user);
 
-            res.json({ ok: true, game: preparedGame });
+            res.json({ ok: true, game: preparedGame, developer: developer });
         }
         else
             res.json({ ok: false, error: "Game not found" });
@@ -181,8 +182,6 @@ class GameController extends MVCController {
             let game = await this.db.GetGame(Number.parseInt(req.query.id as string)) as game;
 
             if (user.role === "ADMIN" || (user.role === "DEVELOPER" && game.User == user.id)) {
-                this.dataManager.DeleteGameData(game.id);
-
                 await this.db.DeteleGame(game.id);
 
                 res.json({ ok: true });

@@ -83,7 +83,16 @@ INSERT INTO Company (Name, Description, state) values ('StarSverSquad', '3S', 1)
 SELECT * from Company;
 SELECT * from "user"; -- admin@mail.com
 SELECT * from Game;
+SELECT * FROM Review;
+
+DELETE from Review;
+
+ALTER TABLE Review ALTER Mark SET DATA TYPE float4;
+
+ALTER TABLE "user" ADD COLUMN rjwt text;
 
 DELETE FROM "user" where id = 4 or id = 5;
 
 INSERT INTO Game (Company, Name, Description, Tags, State, PriceUSD) VALUES (1, 'Thomos the train', 'Remake', 'JRPG:Undertale:RPG', 1, 1.99);
+
+INSERT INTO Review (Game, "User", Text, Mark) values (11, 7, 'Test', 3);

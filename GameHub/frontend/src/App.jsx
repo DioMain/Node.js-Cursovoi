@@ -8,6 +8,9 @@ import DeveloperGameList from './Components/DeveloperGameList';
 import DeveloperCreateGame from "./Components/DeveloperCreateGame";
 import DeveloperGameEditor from "./Components/DeveloperGameEditor";
 import AdminPanel from "./Components/AdminPanel";
+import Catalog from "./Components/Catalog";
+import GamePage from "./Components/GamePage";
+import Libriary from "./Components/Libriary";
 
 import "./css/App.css";
 import "./css/Custom.css";
@@ -15,8 +18,6 @@ import "./css/Buttons.css";
 
 import { useDispatch } from 'react-redux';
 import { setUser } from "./store/userSlice";
-import Catalog from "./Components/Catalog";
-import GamePage from "./Components/GamePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function App() {
             <Route path="/" element={<Catalog />} />
             <Route path="/game/*" element={<GamePage />} /> {/* TODO */}
             <Route path="/user" element={<User />} />
-            <Route path="/libriary" element={<Index />} /> {/* TODO */}
+            <Route path="/libriary" element={<Libriary />} /> {/* TODO */}
             <Route path="/developer" element={<DeveloperGameList />} />
             <Route path="/developer/createGame" element={<DeveloperCreateGame />} />
             <Route path="/developer/editGame/*" element={<DeveloperGameEditor />} />

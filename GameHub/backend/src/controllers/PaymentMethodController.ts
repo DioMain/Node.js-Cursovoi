@@ -94,16 +94,19 @@ class PaymentMethodController extends MVCController {
         try {
             let user = await this.auth.Auth(req, res);
 
-            let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user?.id, type: 1 } });
+            let cart = await this.db.Instance.paymentmethod.findFirst({ where: { User: user.id, type: 1 } });
 
             if (cart) {
-                await this.db.Instance.paymentmethod.delete({ where: { id: cart.id }});
+                await this.db.Instance.transaction.deleteMany({ where: { customerpaymentmethod: cart.id } });
+                await this.db.Instance.transaction.deleteMany({ where: { vendorpaymentmethod: cart.id } });
+                await this.db.Instance.paymentmethod.delete({ where: { id: cart.id } });
 
                 res.json({ ok: true });
             }
             else throw "Cart is not exist";
 
         } catch (error) {
+            console.log(error);
             res.json({ ok: false, error: error });
         }
     }

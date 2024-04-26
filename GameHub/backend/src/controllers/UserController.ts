@@ -5,7 +5,6 @@ import { Controller, Dependency, MVCController, MVCManager, MapGet, MapPost } fr
 import { Request, Response, response } from "express";
 import { DataManager, UserData } from "../DataManager";
 import PassowordHasher from "../PassowordHasher";
-import { user } from "@prisma/client";
 import AuthService from "../AuthService";
 
 
@@ -33,7 +32,7 @@ class UserController extends MVCController {
             let user = await this.auth.Auth(req, res);
             let userData = this.localData.GetUserData(user.id);
 
-            res.json({ auth: true, data: { id: user.id, name: user.name, email: user.email, description: user.description, role: user.role, games: userData?.Games } });
+            res.json({ auth: true, data: { id: user.id, name: user.name, email: user.email, description: user.description, role: user.role, games: userData?.Games, walletusd: user.walletusd } });
         }
         catch (error) {
             res.clearCookie('ajwt');

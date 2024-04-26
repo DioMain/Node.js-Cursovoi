@@ -30,7 +30,7 @@ function FileInput({ buttonText, style, mime, onChange = null, inputId = "" }) {
             <Button component="label" role={undefined} variant="contained" tabIndex={-1} className="CButton0 image-input-button"
                 style={style}>
                 {buttonText}
-                <VisuallyHiddenInput id={inputId} type="file" accept={mime} onChange={onfileChanged}/>
+                <VisuallyHiddenInput r id={inputId} type="file" accept={mime} onChange={onfileChanged} placeholder=''/>
             </Button>
             {
                 newImage !== "" && (

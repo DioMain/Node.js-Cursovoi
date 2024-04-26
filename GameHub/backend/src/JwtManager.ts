@@ -43,7 +43,7 @@ class JwtManager {
     }
 
     IsValidRefreshToken(token: string): boolean {
-        if (this.AuthenticateAccessToken(token) == undefined)
+        if (this.AuthenticateRefreshToken(token) == undefined)
             return false;
         else 
             return true;

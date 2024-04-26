@@ -21,7 +21,7 @@ class AuthService {
 
             let rjwtdata = this.jwt.AuthenticateRefreshToken(req.cookies.rjwt) as JwtPayload;
             
-            ajwt = this.jwt.GenerateAccessToken(rjwtdata.id);
+            ajwt = this.jwt.GenerateAccessToken(rjwtdata.userId);
 
             res.cookie("ajwt", ajwt);
         }

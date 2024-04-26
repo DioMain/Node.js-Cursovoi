@@ -140,7 +140,8 @@ function GameElement({ game, onChangeGameState }) {
 
       <Stack direction={"row"} spacing={2}>
         {/* Cart image aspect 2:1 */}
-        <img style={{ width: `300px`, height: `150px`, objectFit: "cover", borderRadius: "2px" }} src={game.cartImageUrl} />
+        <img style={{ minWidth: `300px`, minHeight: `150px`,  maxWidth: `300px`, 
+                    maxHeight: `150px`, objectFit: "cover", borderRadius: "2px" }} src={game.cartImageUrl} />
         <Stack justifyContent={"space-between"}>
           <Stack>
             <h2>
@@ -150,13 +151,13 @@ function GameElement({ game, onChangeGameState }) {
               {game.tags}
             </div>
           </Stack>
-          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+          <div style={{ maxHeight: "100px", overflow: "hidden", whiteSpace: "balance" }}>
             {game.description}
           </div>
         </Stack>
       </Stack>
 
-      <Stack direction={"row"} justifyContent={"end"}>
+      <Stack direction={"row"} justifyContent={"end"} style={{minWidth: "180px"}}>
         <Stack direction={"column"} justifyContent="space-between">
           <Stack spacing={1} style={{ marginRight: "5px" }}>
 

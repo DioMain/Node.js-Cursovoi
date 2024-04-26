@@ -37,7 +37,7 @@ model review {
   game                   Int
   User                   Int
   text                   String
-  mark                   Int
+  mark                   Float  @db.Real
   user                   user   @relation(fields: [User], references: [id], onDelete: NoAction, onUpdate: NoAction)
   game_review_gameTogame game   @relation("review_gameTogame", fields: [game], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -70,6 +70,7 @@ model user {
   email         String          @unique
   role          String
   walletusd     Decimal?        @default(0) @db.Money
+  rjwt          String?
   game          game[]
   paymentmethod paymentmethod[]
   review        review[]

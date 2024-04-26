@@ -66,8 +66,6 @@ class UserEditorController extends MVCController {
         try {
             let user = await this.auth.Auth(req, res);
 
-            this.dataManager.DeleteUserData(user.id);
-
             await this.db.DeteleUser(user.id);
 
             res.clearCookie("jwt");

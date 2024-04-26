@@ -3,6 +3,7 @@ import "./../../css/Header.css";
 import { useState } from "react";
 import RegisterDialog from "./RegisterDialog";
 import LoginDialog from "./LoginDialog";
+import { Stack } from "@mui/material";
 
 function Header() {
 
@@ -22,7 +23,7 @@ function Header() {
     if (user.auth) {
       switch (user.data.role) {
         case "USER":
-          return (<a href="#t">Библиотека</a>);
+          return (<a href="/libriary">Библиотека</a>);
         case "DEVELOPER":
           return (<a href="/developer">Ваши игры</a>);
         case "ADMIN":
@@ -51,6 +52,8 @@ function Header() {
     setLoginDialogOpen(false);
   }
 
+  console.log(user.data);
+
   return (
     <div className="header-container" id="site_header">
       <nav>
@@ -63,7 +66,10 @@ function Header() {
             {
               user.auth ?
                 (
-                  <span><a href="/user">{user.data.name}</a></span>
+                  <Stack>
+                    <span><a href="/user">{user.data.name}</a></span>
+                    <Stack direction={"row"} justifyContent={"end"}><h5>$ {user.data.walletusd}</h5></Stack>
+                  </Stack>
                 )
                 :
                 (

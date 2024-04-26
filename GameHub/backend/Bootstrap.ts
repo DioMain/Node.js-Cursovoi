@@ -5,14 +5,12 @@ import { MVCManager } from "./src/MVC";
 import { DataManager } from "./src/DataManager";
 import PassowordHasher from "./src/PassowordHasher";
 import JwtManager from "./src/JwtManager";
-import { Request, Response } from "express";
-import { JwtPayload } from "jsonwebtoken";
 import AuthService from "./src/AuthService";
 
 ControllerImporter();
 
-const database = new DataBase()
 const dataManager = new DataManager();
+const database = new DataBase(dataManager);
 const passwordHasher = new PassowordHasher("GAMEHUB");
 const jwtManager = new JwtManager("AGAMEHUB", "BGAMEHUB");
 const server = new Server(false);

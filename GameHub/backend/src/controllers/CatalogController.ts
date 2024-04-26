@@ -1,4 +1,3 @@
-import { Server } from "https";
 import DataBase from "../DataBase";
 import { DataManager } from "../DataManager";
 import { Controller, MVCController, MapPost } from "../MVC"
@@ -8,6 +7,8 @@ import FilterBase from "../filters/FilterBase";
 import { game } from "@prisma/client";
 import PriceFilter from "../filters/PriceFilter";
 import TagFilter from "../filters/TagFilter";
+import Server from "../Server";
+import { Application } from "express-ws";
 
 class CatalogGetGameModel {
     namePattern: string = "";

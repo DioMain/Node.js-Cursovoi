@@ -71,7 +71,7 @@ function RegisterDialog({ open, onCloseClick }) {
   return (
     <Dialog
       className='register-dialog'
-      maxWidth={1500}
+      maxWidth="1500px"
       color='111138'
       open={open}>
       <div className='container'>

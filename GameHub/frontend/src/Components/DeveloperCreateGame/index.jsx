@@ -118,8 +118,12 @@ function DeveloperCreateGame() {
     switch (step) {
       case 0:
         {
-          if (step0Data.name === '') {
+          if (step0Data.name.trim() === '') {
             setError("Поле название пустое");
+            return;
+          }
+          if (step0Data.price < 0) {
+            setError("Цена не может быть отрецательной");
             return;
           }
         }

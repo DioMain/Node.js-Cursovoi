@@ -1,0 +1,44 @@
+.Libriary-container {
+    padding: 16px;
+
+    .Libriary-gamelist {
+        background-color: #111138;
+        border-radius: 6px;
+
+        padding: 6px;
+
+        color: white;
+    }
+
+    .Libriary-game {
+
+        .Libriary-game-title {
+            width: max;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+    
+            .Libriary-game-title-text {
+                position: absolute;
+                top: 8px;
+                left: 8px;
+    
+                background-color: rgba(0, 0, 0, 0.25);
+                border-radius: 8px;
+    
+                padding: 6px;
+    
+                h1 {
+                    text-shadow: 0 0 3px;
+                    opacity: 1;
+                    color: white;
+                }
+            }
+    
+            img {
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}

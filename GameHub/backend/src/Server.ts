@@ -35,9 +35,11 @@ class Server {
 
     Listen() {
         if (this.isHttps){
-            https.createServer(options, this.App).listen(5000, () => {
+            const srv = https.createServer(options, this.App).listen(5000, () => {
                 console.log("Https server listen on: https://localhost:5000/");
             });
+
+            this.WebSocket = expressws(this.App, srv);
         }
         else {
             this.App.listen(5000, () => {

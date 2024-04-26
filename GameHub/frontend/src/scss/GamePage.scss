@@ -36,7 +36,8 @@
 
             padding: 2px;
 
-            background-color: rgba(0, 0, 0, 0.15);
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
             border-radius: 8px;
 
             h5 {
@@ -84,6 +85,23 @@
         }
     }
 
+    .GamePage-developer {
+        padding: 8px;
+
+        border-radius: 6px;
+
+        background-color: rgb(232, 232, 255);
+
+        img {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 100px;
+
+            object-fit: cover;
+        }
+    }
+
     .GamePage-review {
         padding: 6px;
 
@@ -94,5 +112,63 @@
         border-radius: 6px;
 
         background-color: rgb(232, 232, 255);
+
+        .GamePage-review-item {
+            padding: 8px;
+
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+
+            p {
+                padding: 6px;
+                border-radius: 12px;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            img {
+                width: 40px;
+                height: 40px;
+
+                border-radius: 100px;
+
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.GamePage-review-dialog {
+    color: white;
+    background-color: #111138;
+
+    .GamePage-review-dialog-header {
+        padding: 4px;
+    }
+
+    .GamePage-review-dialog-container {
+        width: 600px;
+
+        padding: 12px;
+    }
+}
+
+.GamePage-buy-dialog {
+    color: white;
+    background-color: #111138;
+
+    .GamePage-buy-dialog-header {
+        padding: 4px;
+    }
+
+    .GamePage-buy-dialog-container {
+        width: 600px;
+
+        padding: 12px;
+    }
+
+    .GamePage-buy-pmselect {
+        background-color: white;
+
+        width: 200px;
     }
 }

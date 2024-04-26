@@ -3,6 +3,7 @@ import CatalogController from "./controllers/CatalogController";
 import GameController from "./controllers/GameController";
 import GamePageController from "./controllers/GamePageController";
 import GameSeachController from "./controllers/GameSeachController";
+import LibriaryController from "./controllers/LibriaryController";
 import PaymentMethodController from "./controllers/PaymentMethodController";
 import SaleController from "./controllers/SaleController";
 import UserController from "./controllers/UserController";
@@ -18,4 +19,5 @@ export default function () {
     GameSeachController;
     CatalogController;
     GamePageController;
+    LibriaryController;
 }

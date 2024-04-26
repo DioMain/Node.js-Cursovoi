@@ -1,11 +1,16 @@
-import { PrismaClient, game, review } from "@prisma/client";
+import { PrismaClient, game, review, user } from "@prisma/client";
+import { DataManager } from "./DataManager";
 
 class DataBase {
 
     Instance: PrismaClient
 
-    constructor() {
+    private data: DataManager
+
+    constructor(data: DataManager) {
         this.Instance = new PrismaClient();
+
+        this.data = data; 
     }
 
     connect() { this.Instance.$connect(); }
@@ -25,6 +30,8 @@ class DataBase {
 
     async DeteleUser(id: number) {
 
+        this.data.DeleteUserData(id);
+
         (await this.Instance.game.findMany({ where: { User: id } }))
             .forEach(async game => await this.DeteleGame(game.id));
 
@@ -35,6 +42,8 @@ class DataBase {
     }
 
     async DeteleGame(id: number) {
+        this.data.DeleteGameData(id);
+
         await this.Instance.sale.deleteMany({ where: { game: id } });
 
         await this.Instance.review.deleteMany({ where: { game: id } });
@@ -47,11 +56,9 @@ class DataBase {
     async GetGamesByIds(gamesIds: Array<number>) {
         let games = new Array<game>();
 
-        gamesIds.forEach(async i => {
-            let game = await this.Instance.game.findFirst({ where: { id: i }, include: { sale_sale_gameTogame: true, review_review_gameTogame: true } });
-
-            games.push(game as game);
-        });
+        for (let i = 0; i < gamesIds.length; i++) {
+            games.push(await this.GetGame(gamesIds[i]) as game);  
+        }
 
         return games;
     }
@@ -94,16 +101,33 @@ class DataBase {
         });
     }
 
-    // Пока не знаю куда засунуть этот метод
+    async GetGameReviews(gameId: number) {
+
+        let reviews = await this.Instance.review.findMany({ where: { game: gameId }, include: { user: true } });
+
+        return reviews.map(item => {
+            return {
+                text: item.text,
+                mark: item.mark,
+                username: item.user.name,
+                usericon: `/users/${item.user.id}/icon.png`
+            }
+        });
+    }
+
     public static PrepareGameInformation(game: game) {
         let reviews = (game as any).review_review_gameTogame as review[];
 
         let middleMark = -1;
 
         if (reviews && reviews.length > 0) {
-            reviews.forEach(review => middleMark += review.mark);
+            middleMark = 0;
 
-            middleMark /= reviews.length;
+            reviews.forEach(review => {
+                middleMark += review.mark
+            });
+
+            middleMark = middleMark / reviews.length;
         }
 
         const gamesWithPath = {
@@ -122,6 +146,18 @@ class DataBase {
         }
 
         return gamesWithPath;
+    }
+
+    public static PrepareUserInformation(user: user) {
+
+        const userPrep = {
+            id: user.id,
+            name: user.name,
+            description: user.description,
+            icon: `/users/${user.id}/icon.png`
+        }
+
+        return userPrep;
     }
 }
 
