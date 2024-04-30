@@ -42,9 +42,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Catalog />} />
-            <Route path="/game/*" element={<GamePage />} /> {/* TODO */}
+            <Route path="/game/*" element={<GamePage />} />
             <Route path="/user" element={<User />} />
-            <Route path="/libriary" element={<Libriary />} /> {/* TODO */}
+            <Route path="/libriary" element={<Libriary />} />
             <Route path="/developer" element={<DeveloperGameList />} />
             <Route path="/developer/createGame" element={<DeveloperCreateGame />} />
             <Route path="/developer/editGame/*" element={<DeveloperGameEditor />} />

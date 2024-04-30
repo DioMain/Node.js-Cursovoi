@@ -73,12 +73,16 @@ function Header() {
                 )
                 :
                 (
-                  <span><a href="#site_header" onClick={registerOpen}>Регистрация</a>/<a href="#site_header" onClick={loginOpen}>Вход</a></span>
+                  <span>
+                    <a href="#site_header" onClick={registerOpen}>Регистрация</a>
+                    /
+                    <a href="#site_header" onClick={loginOpen}>Вход</a>
+                  </span>
                 )
             }
           </div>
           <div style={{ marginTop: "12px" }} className="img-container">
-            <img src={userImageUrl} alt="/images/user.png" style={{ objectFit: "cover"}}/>
+            <img src={userImageUrl} alt="/images/user.png" style={{ objectFit: "cover" }} />
           </div>
         </div>
       </nav>
