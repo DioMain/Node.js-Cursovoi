@@ -16,11 +16,15 @@ class AuthService {
         let ajwt;
 
         if (!this.jwt.IsValidAccessToken(req.cookies.ajwt))  {
-            if (!this.jwt.IsValidRefreshToken(req.cookies.rjwt))
+            if (!this.jwt.IsValidRefreshToken(req.cookies.rjwt)) 
                 throw "jwt";
 
-            let rjwtdata = this.jwt.AuthenticateRefreshToken(req.cookies.rjwt) as JwtPayload;
-            
+            let rjwtdata = this.jwt.AuthenticateRefreshToken(req.cookies.rjwt) as JwtPayload;  
+            let user = await this.db.Instance.user.findFirst({ where: { id: rjwtdata.userId } });
+
+            if (!user || user.rjwt !== req.cookies.rjwt)
+                throw "jwt";
+
             ajwt = this.jwt.GenerateAccessToken(rjwtdata.userId);
 
             res.cookie("ajwt", ajwt);

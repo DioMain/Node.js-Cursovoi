@@ -9,10 +9,10 @@ import Button from '@mui/material/Button'
 
 function LoginDialog({ open, onCloseClick }) {
 
-    let [loginError, setLoginError] = React.useState("");
+  let [loginError, setLoginError] = React.useState("");
 
-    const login = () => {
-    
+  const login = () => {
+
     let login_email = document.getElementById("login_email");
     let login_password = document.getElementById("login_password");
 
@@ -27,7 +27,7 @@ function LoginDialog({ open, onCloseClick }) {
     })
       .then(raw => raw.json())
       .then(data => {
-        if (data.success){
+        if (data.success) {
           window.location.reload();
         }
         else {

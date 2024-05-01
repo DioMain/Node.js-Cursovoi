@@ -26,6 +26,12 @@ function MapPost(url: string) {
     }
 }
 
+function WebSocketRoute(url: string) {
+    return function (target: MVCController, method: string, descriptor: PropertyDescriptor) {
+        MVCController.LinkedRoutes.push(MVCRoute.CreateC(url, descriptor.value, target.constructor.name));
+    }
+}
+
 function Dependency(tag: string) {
     return function (target: MVCController, propertyKey: string) {
         let value: Object | undefined;
@@ -76,6 +82,17 @@ class MVCRoute {
         route.method = method;
         route.action = action;
         route.controller = controller;
+
+        return route;
+    }
+
+    static CreateC(url: string, action: WebsocketRequestHandler, controller: string): MVCRoute {
+        let route = new MVCRoute();
+
+        route.url = url;
+        route.action = action;
+        route.controller = controller;
+        route.isWebSocket = true;
 
         return route;
     }
@@ -169,6 +186,9 @@ class MVCManager {
     }
 
     MapRouteWS(url: string, action: WebsocketRequestHandler) {
+        console.log(`+WS: ${url}`);
+        console.log(`+WS: ${action}`);
+
         this.server.WebSocket.app.ws(url, action);
     }
 
@@ -197,7 +217,6 @@ class MVCManager {
                     return;
 
                 if (route.isWebSocket) {
-                    console.log(route.url);
                     this.MapRouteWS(route.url, route.action as WebsocketRequestHandler);
                 }
                 else {
@@ -213,5 +232,5 @@ class MVCManager {
 
 export {
     MVCController, MVCManager, MVCRouteMethod,
-    Controller, MapRoute, MapGet, MapPost, Dependency
+    Controller, MapRoute, MapGet, MapPost, Dependency, WebSocketRoute
 };

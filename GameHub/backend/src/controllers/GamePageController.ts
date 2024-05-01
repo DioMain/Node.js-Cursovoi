@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import AuthService from "../AuthService";
 import DataBase from "../DataBase";
 import { DataManager, UserData } from "../DataManager";
-import { Controller, MVCController, MapPost } from "../MVC";
+import { Controller, MVCController, MapPost, WebSocketRoute } from "../MVC";
 import Server from "../Server";
 import * as ws from "ws";
 import { paymentmethod, user } from "@prisma/client";
@@ -47,6 +47,7 @@ class GamePageController extends MVCController {
         this.server.WebSocket.app.ws('/game/reviews/*', this.ReviewsWS.bind(this));
     }
 
+    //@WebSocketRoute('/game/reviews/*')
     async ReviewsWS(ws: ws, req: Request) {
         let gameId = Number.parseInt(req.path.split('/')[3]);
 

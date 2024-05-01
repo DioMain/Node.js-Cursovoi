@@ -3,7 +3,7 @@ import crypto from "crypto";
 /**
  * @tutorial SHA2-256
  */
-class PassowordHasher {
+class PasswordHasher {
     public salt: string
 
     constructor(salt: string) {
@@ -21,4 +21,4 @@ class PassowordHasher {
     }
 }
 
-export default PassowordHasher;
+export default PasswordHasher;

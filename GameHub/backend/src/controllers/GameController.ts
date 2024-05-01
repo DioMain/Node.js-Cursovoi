@@ -190,9 +190,10 @@ class GameController extends MVCController {
 
         }
         catch (error) {
-            res.json({ ok: false, error: error });
+            res.writeHead(403);
+            res.end(JSON.stringify({ ok: false, error: error }));
         }
-    }
+    }   
 
     @MapGet('/api/downloadgame')
     async DownloadGame(req: Request, res: Response) {

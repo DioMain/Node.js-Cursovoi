@@ -4,7 +4,7 @@ import JwtManager from "../JwtManager";
 import { Controller, Dependency, MVCController, MVCManager, MapGet, MapPost } from "../MVC";
 import { Request, Response, response } from "express";
 import { DataManager, UserData } from "../DataManager";
-import PassowordHasher from "../PassowordHasher";
+import PasswordHasher from "../PasswordHasher";
 import AuthService from "../AuthService";
 
 
@@ -13,7 +13,7 @@ class UserController extends MVCController {
     public db: DataBase;
     public localData: DataManager;
     public jwt: JwtManager;
-    public hasher: PassowordHasher;
+    public hasher: PasswordHasher;
     public auth: AuthService;
 
     constructor() {
@@ -56,6 +56,8 @@ class UserController extends MVCController {
 
             let atoken = this.jwt.GenerateAccessToken(user?.id as number);
             let rtoken = this.jwt.GenerateRefreshToken(user?.id as number);
+
+            await this.db.Instance.user.update({ where: { id: user.id }, data: { rjwt: rtoken } });
 
             res.cookie("ajwt", atoken);
             res.cookie("rjwt", rtoken);

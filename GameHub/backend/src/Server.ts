@@ -12,18 +12,25 @@ const options = {
 };
 
 class Server {
-
     public App : Express;
     public WebSocket : Instance;
     public Multer : Multer;
     
     private isHttps: boolean;
+    private httpssrv?: https.Server;
 
     constructor(ishttps: boolean = false) {
         this.isHttps = ishttps;
 
         this.App = express();
-        this.WebSocket = expressws(this.App);
+
+        if (ishttps) {
+            this.httpssrv = https.createServer(options, this.App);
+            this.WebSocket = expressws(this.App, this.httpssrv);
+        }
+        else {
+            this.WebSocket = expressws(this.App);
+        }     
 
         this.Multer = multer({dest: './upload'});
 
@@ -34,12 +41,10 @@ class Server {
     }
 
     Listen() {
-        if (this.isHttps){
-            const srv = https.createServer(options, this.App).listen(5000, () => {
+        if (this.isHttps && this.httpssrv){
+            this.httpssrv.listen(5000, () => {
                 console.log("Https server listen on: https://localhost:5000/");
             });
-
-            this.WebSocket = expressws(this.App, srv);
         }
         else {
             this.App.listen(5000, () => {
