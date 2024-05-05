@@ -13,7 +13,7 @@ function BuyGameDialog({ open, closeCallback, onSubmit, realPrice, wallet, error
   const buyMessage = () => {
     switch (pmtype) {
       case 0:
-        if (wallet < realPrice)
+        if (Number.parseFloat(wallet) < Number.parseFloat(realPrice))
           return (<Alert severity="error">У вас не хватает средств</Alert>);
         break;
       case 1:

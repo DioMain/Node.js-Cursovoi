@@ -61,8 +61,6 @@ function DeveloperCreateGame() {
   }
 
   const stepDataHandler = (field, value) => {
-    console.log(`${field} ${value}`);
-
     switch (field) {
       case "name":
         setStep0Data({ name: value, description: step0Data.description, tags: step0Data.tags, price: step0Data.price, isfree: step0Data.isfree });
@@ -81,7 +79,7 @@ function DeveloperCreateGame() {
         break;
       case "icon":
         setStep1Data({ icon: value, catalog: step1Data.catalog, libriary: step1Data.libriary });
-        break;
+      break;
       case "catalog":
         setStep1Data({ icon: step1Data.icon, catalog: value, libriary: step1Data.libriary });
         break;
@@ -115,6 +113,9 @@ function DeveloperCreateGame() {
   }
 
   const nextStep = () => {
+    const allowedImageMimes = "image/png,image/jpeg";
+    const allowedMainFileMimes = "application/x-zip-compressed,application/x-msdownload,application/x-compressed"; 
+
     switch (step) {
       case 0:
         {
@@ -134,12 +135,27 @@ function DeveloperCreateGame() {
             setError("Иконка должна быть указана");
             return;
           }
+          else if (allowedImageMimes.split(',').every(i => i !== step1Data.icon[0].type)){
+            setError("Не верный формат файла");
+            return;
+          }
+
+
           if (step1Data.catalog === undefined) {
             setError("Изображение для каталога должно быть указано");
             return;
           }
+          else if (allowedImageMimes.split(',').every(i => i !== step1Data.catalog[0].type)){
+            setError("Не верный формат файла");
+            return;
+          }
+
           if (step1Data.libriary === undefined) {
             setError("Изображение для библиотеки должно быть указано");
+            return;
+          }
+          else if (allowedImageMimes.split(',').every(i => i !== step1Data.libriary[0].type)){
+            setError("Не верный формат файла");
             return;
           }
         }
@@ -148,6 +164,10 @@ function DeveloperCreateGame() {
         {
           if (step2Data.mainFile === undefined) {
             setError("Фаил с игрой не указан");
+            return;
+          }
+          else if (allowedMainFileMimes.split(',').every(i => i !== step2Data.mainFile[0].type)){
+            setError("Не верный формат файла");
             return;
           }
         }

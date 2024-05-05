@@ -25,7 +25,14 @@ function UserEditor() {
 
 		let formData = new FormData();
 
-		formData.append('userIcon', userIcon.files[0]);
+		const allowedImageMimes = "image/png,image/jpeg";
+
+		if (userIcon.files[0] &&
+			allowedImageMimes.split(',').some(i => i === userIcon.files[0].type))
+			formData.append('userIcon', userIcon.files[0]);
+		else
+			formData.append('userIcon', undefined);
+		
 		formData.append('userNickname', nickname.value);
 		formData.append('userDescription', txtAreaValue);
 
