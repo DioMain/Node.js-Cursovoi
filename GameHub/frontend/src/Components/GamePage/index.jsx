@@ -214,7 +214,7 @@ function GamePage() {
                                 realPrice <= 0 ?
                                   <h5>Бесплатно</h5>
                                   :
-                                  <h5>$ {game.priceusd}</h5>
+                                  <h5>$ {realPrice}</h5>
                               }
 
                               {game.sale.cause !== "" ? <p>{game.sale.cause}</p> : <></>}
