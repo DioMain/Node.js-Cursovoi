@@ -25,7 +25,7 @@ class LibriaryController extends MVCController {
     @MapGet('/api/libriary/getusergames')
     async GetGames(req : Request, res : Response) {
         let userId = Number.parseInt(req.query.id as string);
-
+        
         let userData = this.dataManager.GetUserData(userId);
 
         if (userData) {
